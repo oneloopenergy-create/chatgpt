@@ -14,10 +14,12 @@ header{height:76px;padding:0 32px;display:flex;align-items:center;justify-conten
 @media(min-width:1500px){main{padding-left:64px;padding-right:64px}}@media(max-width:1100px){main{padding:28px 22px}.steps{grid-template-columns:repeat(3,1fr)}.workspace-top{align-items:flex-start;flex-direction:column}.brand small{display:none}}@media(max-width:760px){header{height:64px;padding:0 20px}.wrap{grid-template-columns:1fr}.header-status{font-size:10px}aside{padding:22px;border-right:none;border-bottom:1px solid var(--line)}aside textarea{min-height:100px}.sidebar-note{display:none}.plist{max-height:180px;overflow:auto}main{padding:24px 18px}.welcome{margin:10px auto}.welcome h1{letter-spacing:-1.5px}.feature-grid{grid-template-columns:1fr}.energy-visual{padding:22px 14px;margin-top:30px}.flow{gap:5px}.flow-node{flex-basis:72px}.flow-icon{width:52px;height:52px}.flow-line{min-width:10px}.welcome-action{align-items:flex-start;flex-direction:column;gap:8px}.card{padding:16px}.row input,.row select{max-width:100%}.steps{gap:6px}.step{padding:10px 8px}.workspace-top h1{font-size:25px}.welcome-lead{font-size:14px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
 .design-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:16px 0}.design-grid label{font-size:12px;color:var(--muted)}.design-grid input,.design-grid select{display:block;margin-top:6px;color:var(--fg)}.equipment-row{padding:16px 0;border-top:1px solid var(--line)}.download-link{color:var(--accent);text-decoration:none;padding:10px 14px;font-size:12px;font-weight:550}
+.workflow-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.workflow-grid .card{margin:0 0 14px}.workflow-grid h3{font-size:14px}.workflow-grid details ul{padding-left:18px;font-size:12px}.engineering-collection{grid-column:1/-1;width:100%;margin:16px 0}.engineering-row{margin-top:12px}.delivery-document-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;margin:20px 0}.delivery-document-grid b{font-size:12px}#engineeringForm>details{margin:14px 0}#engineeringForm label{display:block;font-size:12px;color:var(--muted);padding:8px 0}#engineeringForm input,#engineeringForm select{margin-top:6px}#engineeringForm .design-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))}#engineeringForm section{min-width:0}#deliveryPreview{margin-top:16px}.workflow-grid li{overflow-wrap:anywhere}
+.steps.delivery-steps{grid-template-columns:repeat(7,minmax(0,1fr))}.delivery-steps .step b{font-size:10px}@media(max-width:1100px){.steps.delivery-steps{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 </head>
 <body>
-<header><div class="brand"><span class="brandmark" aria-hidden="true">ϟ</span><b>GridEasy</b><small>Connection workspace</small></div><div class="header-status"><span class="status-dot"></span>Engineering prototype</div></header>
+<header><div class="brand"><span class="brandmark" aria-hidden="true">ϟ</span><b>GridEasy</b><small>Connection workspace</small></div><div class="header-status"><span class="status-dot"></span>Internal engineering workspace</div></header>
 <div class="wrap">
   <aside>
     <div class="eyebrow">Your workspace</div><h2>Start something powerful.</h2><label class="src" for="newName">Project name</label>
@@ -30,6 +32,7 @@ header{height:76px;padding:0 32px;display:flex;align-items:center;justify-conten
   <main id="main"><section class="welcome"><div class="welcome-label">LESS FRICTION. MORE CONNECTION.</div><h1>Your next connection.<br><span>Beautifully considered.</span></h1><p class="welcome-lead">From the first project brief to a connection-ready draft. One calm workspace for solar, storage and everything in between.</p><div class="welcome-action"><button onclick="document.querySelector('#newName').focus()">Start a new project &rarr;</button><span>Bring your brief. We’ll help connect the details.</span></div><div class="energy-visual"><div class="visual-head"><span>CONNECTED BY DESIGN</span><span>PV + storage → grid</span></div><div class="flow"><div class="flow-node"><div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M5 8h14l2 10H3L5 8Zm7 0v10M4 13h16M9 22h6m-3-4v4M12 1v3M4 3l2 2m14-2-2 2"/></svg></div><b>Solar generation</b></div><div class="flow-line"></div><div class="flow-node"><div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="5" y="5" width="14" height="16" rx="3"/><path d="M9 5V2h6v3m-2 4-4 5h6l-4 4"/></svg></div><b>Battery storage</b></div><div class="flow-line"></div><div class="flow-node"><div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m12 2-7 20m7-20 7 20M8 12h8M6 18h12M8 6h8M3 10l9-4 9 4M8 22l8-10M16 22 8 12"/></svg></div><b>Grid connection</b></div></div></div><div class="feature-grid"><article class="feature"><span class="num">01 / UNDERSTAND</span><h3>A brief. A clearer picture.</h3><p>Turn project details into structured parameters with traceable sources.</p></article><article class="feature"><span class="num">02 / DESIGN</span><h3>Details that connect.</h3><p>Bring calculations, network rules and single line diagrams together.</p></article><article class="feature"><span class="num">03 / PREPARE</span><h3>Ready for your review.</h3><p>Generate a coordinated draft package for engineer review and sign-off.</p></article></div><p class="welcome-foot">Australian DNSP connections · PV & battery projects · 100 kW – 5 MW</p></section></main>
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
+<script src="/delivery.js"></script>
 <script>
 const STEPS = [["1_intake","1 Smart intake","Brief and files → fields + sources"],["2_rules","2 Rule matching","ENA / DNSP / 4777.2"],
   ["3_design","3 Design","SLD · protection settings"],["4_compliance","4 Compliance","4777 checks · export limits"],["5_package","5 Sign-off and package","Registered engineer sign-off"]];
@@ -54,7 +57,7 @@ async function createProject() {
   if (busy) return;
   const name = $("#newName").value.trim(); if (!name) return toast("Please enter a project name");
   busy = true; document.querySelector("#createButton").disabled = true;
-  try { cur = await api("/api/projects", { method: "POST", body: JSON.stringify({ name, brief: $("#newBrief").value }) }); tab = "sld"; render(); await loadList(); }
+  try { cur = await api("/api/projects", { method: "POST", body: JSON.stringify({ name, brief: $("#newBrief").value }) }); tab = "delivery"; render(); await loadList(); }
   catch (e) { toast(e.message); }
   finally { busy = false; document.querySelector("#createButton").disabled = false; }
 }
@@ -79,14 +82,13 @@ function render() {
       <div class="row"><button class="ghost" onclick="openProject(cur.id)">Reload project</button><button class="ghost" onclick="act(()=>api('/api/projects/${p.id}/compute',{method:'POST'}))">Recalculate</button>
       <button onclick="generateDocuments()">Generate all documents</button></div>
     </div>
-    <div class="steps">${STEPS.map(s => `<div class="step ${stepState(s[0])}"><b>${s[1]}</b>${s[2]}</div>`).join("")}
-      <div class="step ${["submitted","rfi","offer"].includes(p.stage) ? "cur" : ""}"><b>DNSP review</b>${p.rfi_rounds.length} RFI round(s)</div></div>
-    <div class="tabs">${[["sld","Single line diagram"],["design","Design inputs"],["params",`Parameters (${Object.keys(p.params).length})`],["assume",`Assumptions to confirm (${p.assumptions.length})`],["findings",`Compliance (${errs} errors)`],
+    <div class="steps ${p.delivery?'delivery-steps':''}">${p.delivery?p.workflow.map(s=>`<div class="step ${s.status==='complete'?'done':s.status==='ready'?'cur':''}"><b>${esc(s.title)}</b>${s.status==='complete'?'已完成':s.status==='ready'?'待确认':s.blockers.length+' 项待处理'}</div>`).join(''):STEPS.map(s=>`<div class="step ${stepState(s[0])}"><b>${s[1]}</b>${s[2]}</div>`).join('')}</div>
+    <div class="tabs">${[["delivery","工程交付 · 7 阶段"],["sld","Single line diagram"],["design","Design inputs"],["params",`Parameters (${Object.keys(p.params).length})`],["assume",`Assumptions to confirm (${p.assumptions.length})`],["findings",`Compliance (${errs} errors)`],
       ["docs",`Documents (${p.documents.length})`],["bess","Battery economics"],["pkg","Package"],["rfi","RFIs"],["intake","Add information"]]
       .map(([k,l]) => `<button class="${tab===k?"on":""}" onclick="tab='${k}';render()">${l}</button>`).join("")}</div>
     ${p.calculation_notes?.length ? `<details><summary class="warning">Missing calculation inputs · ${p.calculation_notes.length} steps need attention</summary><ul>${p.calculation_notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul></details>`:''}
     <div id="pane"></div>`;
-  ({ sld: paneSld, design: paneDesign, params: paneParams, assume: paneAssume, findings: paneFindings, docs: paneDocs, bess: paneBess, pkg: panePkg, rfi: paneRfi, intake: paneIntake })[tab]();
+  ({ delivery: paneDelivery, sld: paneSld, design: paneDesign, params: paneParams, assume: paneAssume, findings: paneFindings, docs: paneDocs, bess: paneBess, pkg: panePkg, rfi: paneRfi, intake: paneIntake })[tab]();
 }
 async function generateDocuments() {
   const r = await act(()=>api(`/api/projects/${cur.id}/documents/generate`,{method:'POST'}));
@@ -114,14 +116,14 @@ async function saveDesign() {
  const updates=[];
  for(const [key,id] of [['site.dnsp','design-dnsp'],['design.topology','design-topology']]){const value=document.getElementById(id).value;if(value)updates.push({key,value});else if(cur.params[key])updates.push({key,value:null,remove:true});}
  designFields.forEach(([key,n,t],i)=>{const v=document.getElementById('design-'+i).value.trim();if(v!=='')updates.push({key,value:t==='number'?Number(v):v,unit:cur.params[key]?.unit ?? null});else if(cur.params[key])updates.push({key,value:null,remove:true});});
- updates.push({key:'equipment.pv_inverters',value:equipmentDraft.pv},{key:'equipment.bess',value:equipmentDraft.bess});
+ if(!cur.delivery?.design?.equipment.length) updates.push({key:'equipment.pv_inverters',value:equipmentDraft.pv},{key:'equipment.bess',value:equipmentDraft.bess});
  const button=$('#saveDesign');button.disabled=true;button.textContent='Saving…';
  try{const r=await act(()=>api(`/api/projects/${cur.id}/parameters`,{method:'PUT',body:JSON.stringify({updates})}));if(r){tab='sld';render();toast(r.document_errors?.sld?'Saved. Diagram needs more information.':'Design saved. Diagram updated.');}}
  finally{if(button.isConnected){button.disabled=false;button.textContent='Save & update diagram';}}
 }
 
 function paramRow(k, v, withConfirm) {
-  const editable = !k.startsWith("calc.") && !k.startsWith("rules.");
+  const editable = !k.startsWith("calc.") && !k.startsWith("rules.") && !k.startsWith("delivery.") && !(cur.delivery?.design?.equipment.length && k.startsWith("equipment."));
   return `<tr><td><code>${esc(k)}</code></td><td>${esc(fmt(v.value))} ${esc(v.unit || "")}</td><td>v${v.version}</td>
     <td><span class="tag">${esc(v.source.kind)}</span><div class="src">${esc(v.source.ref)}${v.source.note ? " · " + esc(v.source.note) : ""}</div></td>
     <td>${v.is_assumption ? `<span class="warning">Unconfirmed</span>` : v.confirmed_by ? `<span class="ok">✓ ${esc(v.confirmed_by)}</span>` : ""}</td>

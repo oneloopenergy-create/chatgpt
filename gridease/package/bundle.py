@@ -23,6 +23,9 @@ class PackageBlocked(Exception):
 
 
 def blockers(p: Project) -> list[str]:
+    if p.delivery is not None:
+        from ..delivery.readiness import workflow
+        return next(s['blockers'] for s in workflow(p) if s['id']=='pre_submission')
     out = [f"[{f.id}] {f.title}" for f in run_checks(p) if f.severity == "error" or f.id == "rules.unverified"]
     if p.assumptions():
         out.append(f"{len(p.assumptions())} assumption(s) not confirmed")
@@ -41,6 +44,8 @@ def blockers(p: Project) -> list[str]:
 
 
 def build_package(p: Project, mode: Literal["draft", "final"] = "draft", actor: str = "user") -> bytes:
+    if p.delivery is not None and mode == "final":
+        raise PackageBlocked(["Use the scoped engineering release endpoint to freeze design, commissioning or handover packages"])
     blk = blockers(p)
     if mode == "final" and blk:
         raise PackageBlocked(blk)

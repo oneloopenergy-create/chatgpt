@@ -73,6 +73,9 @@ class _Svg:
 
 def generate_sld(p: Project) -> tuple[str, dict[str, int], list[str]]:
     """Returns (svg, parameters used with versions, to-do items)."""
+    if p.delivery is not None and p.delivery.design.breakers:
+        from ..delivery.documents import engineering_sld
+        return engineering_sld(p)
     used: dict[str, int] = {}
     todo: list[str] = []
 
@@ -205,7 +208,7 @@ def generate_sld(p: Project) -> tuple[str, dict[str, int], list[str]]:
     if not g("site.nmi"):
         todo.append("NMI missing")
     if central and not mv and not g("design.central_protection_relay"):
-        todo.append("Confirm central protection relay model and trip target (main switch shunt trip)")
+        todo.append("Confirm interface relay and EG coupling trip target; verify loss-of-supply fail-safe scheme against the applicable standard")
     for b in bess:
         if b.get("energy_kwh") is None:
             todo.append(f"Battery energy missing for {b['model']}")
@@ -213,4 +216,8 @@ def generate_sld(p: Project) -> tuple[str, dict[str, int], list[str]]:
         if not inv.get("dc_kwp"):
             todo.append(f"Inverter {inv['model']} has no array kWp assigned")
             break
+    if p.delivery is not None:
+        from ..delivery.readiness import design_issues
+        todo.extend(design_issues(p))
+        used['delivery.design'] = p.params['delivery.design'].version if 'delivery.design' in p.params else 0
     return s.render(width, height), used, todo

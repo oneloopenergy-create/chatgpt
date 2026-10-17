@@ -70,6 +70,16 @@ def run_checks(p: Project, today: date | None = None) -> list[Finding]:
     for key in ("equipment.pv_inverters", "equipment.bess"):
         for item in p.get(key) or []:
             model = item.get("model", "")
+            if p.delivery is not None and p.delivery.design.equipment:
+                from ..delivery.readiness import accepted
+                device=next((e for e in p.delivery.design.equipment if e.model==model and e.manufacturer==item.get('manufacturer')),None)
+                if device is not None:
+                    if not accepted(p, 'cec_certificate', device.cec_evidence_id):
+                        add(id=f"cec.evidence.{device.id}",severity="warning",title=f"{model}: model-specific CEC evidence awaits review",
+                            clause="CEC official certification evidence; bundled sample list is not authoritative",params=[key],
+                            detail="A sample catalogue match or mismatch does not establish current CEC certification.",
+                            suggestion="Attach and review the actual model certificate/list entry, nameplate and validity dates.")
+                    continue
             cec = find_cec_inverter(item.get("manufacturer", ""), model)
             if cec is None:
                 add(id=f"cec.missing.{model}", severity="error",

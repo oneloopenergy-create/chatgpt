@@ -15,6 +15,7 @@ from enum import Enum
 from typing import Any
 
 from pydantic import BaseModel, Field, ConfigDict
+from ..delivery.model import Delivery
 
 
 def now() -> str:
@@ -132,6 +133,8 @@ class Project(BaseModel):
     signoffs: list[SignOff] = Field(default_factory=list)
     rfi_rounds: list[RfiRound] = Field(default_factory=list)
     audit: list[AuditEntry] = Field(default_factory=list)
+
+    delivery: Delivery | None = None
 
     calculation_notes: list[str] = Field(default_factory=list)
     document_errors: dict[str, str] = Field(default_factory=dict)

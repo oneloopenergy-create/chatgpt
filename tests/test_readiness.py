@@ -22,7 +22,7 @@ def test_automatic_sld_create_update_download_and_reload(client):
     r = client.post('/api/projects', json={'name': 'Internal job', 'brief': BRIEF})
     assert r.status_code == 201
     p = r.json()
-    assert [d['doc_id'] for d in p['documents']] == ['sld']
+    assert {'sld','protection_schematic','tripping_matrix','site_layout','control_description'} <= {d['doc_id'] for d in p['documents']}
     pid = p['id']
     url = f'/api/projects/{pid}/documents/sld'
     old = client.get(url).text

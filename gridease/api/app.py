@@ -16,6 +16,8 @@ from ..compliance.checks import run_checks
 from ..core.model import Project, RfiItem, SignOff, Source, SourceKind, Stage, now
 from ..core.store import ProjectStore, ProjectConflict
 from ..core.validation import validate_parameter
+from ..delivery.model import Delivery
+from ..delivery.readiness import workflow, design_hash
 from ..intake.extract import RuleExtractor, apply_extraction
 from ..package.bundle import PackageBlocked, blockers, build_package
 from ..package.documents import GENERATORS, generate_all
@@ -24,7 +26,7 @@ from ..rules.library import list_packs
 
 WEB = Path(__file__).resolve().parent.parent / "web"
 
-app = FastAPI(title="GridEasy", version="0.1.0",
+app = FastAPI(title="GridEasy", version="0.2.0",
               description="AI engineering platform for Australian distribution network connections — drafts only; sign-off and submission by a registered engineer")
 _store: ProjectStore | None = None
 
@@ -37,7 +39,8 @@ async def conflict_handler(request, exc):
 def refresh_design(p: Project) -> None:
     """Keep the SLD current whenever design inputs change; retain visible failure reasons."""
     p.calculation_notes = run_all(p)
-    _, errors = generate_all(p, ["sld"])
+    from ..delivery.documents import GENERATORS as engineering_generators
+    _, errors = generate_all(p, ["sld"] + (list(engineering_generators) if p.delivery is not None else []))
     p.document_errors.pop("sld", None)
     p.document_errors.update(errors)
 
@@ -70,6 +73,9 @@ def summary(p: Project) -> dict[str, Any]:
     return {
         "calculation_notes": p.calculation_notes, "document_errors": p.document_errors,
         "revision": p.revision,
+        "delivery_hash": design_hash(p) if p.delivery is not None else None,
+        "delivery": p.delivery.model_dump(mode="json") if p.delivery is not None else None,
+        "workflow": workflow(p) if p.delivery is not None else [],
         "id": p.id, "name": p.name, "stage": p.stage, "created_at": p.created_at,
         "params": {k: v.model_dump(mode="json") | {"is_assumption": v.is_assumption} for k, v in sorted(p.params.items())},
         "assumptions": [a.key for a in p.assumptions()],
@@ -89,6 +95,7 @@ class CreateProject(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
     name: str = Field(min_length=1, max_length=200)
     brief: str | None = None
+    engineering_delivery: bool = True
 
 
 class IntakeBody(BaseModel):
@@ -134,6 +141,11 @@ def index() -> FileResponse:
     return FileResponse(WEB / "index.html")
 
 
+@app.get('/delivery.js', include_in_schema=False)
+def delivery_javascript():
+    return FileResponse(WEB / 'delivery.js', media_type='application/javascript')
+
+
 @app.get("/api/rules")
 def rules() -> list[dict[str, Any]]:
     return list_packs()
@@ -173,7 +185,7 @@ def projects(st: ProjectStore = Depends(store)) -> list[dict[str, Any]]:
 
 @app.post("/api/projects", status_code=201)
 def create(body: CreateProject, st: ProjectStore = Depends(store)) -> dict[str, Any]:
-    p = Project(name=body.name)
+    p = Project(name=body.name, delivery=Delivery() if body.engineering_delivery else None)
     p.log("user", "project.create", name=body.name)
     if body.brief:
         try:
@@ -219,8 +231,10 @@ def intake(body: IntakeBody, p: Project = Depends(load), st: ProjectStore = Depe
 
 @app.put("/api/projects/{pid}/params/{key}")
 def set_param(key: str, body: ParamBody, p: Project = Depends(load), st: ProjectStore = Depends(store)) -> dict[str, Any]:
-    if key.startswith(("calc.", "rules.")):
+    if key.startswith(("calc.", "rules.", "delivery.")):
         raise HTTPException(400, "calc.* / rules.* are produced by the calculation and rule engines and cannot be edited manually")
+    if p.delivery is not None and p.delivery.design.equipment and key.startswith('equipment.'):
+        raise HTTPException(409, 'Edit equipment in the Engineering delivery schedule; it owns the diagram and calculations')
     try:
         value = validate_parameter(key, body.value)
     except (ValueError, KeyError, TypeError, AttributeError) as e:
@@ -235,7 +249,9 @@ def set_param(key: str, body: ParamBody, p: Project = Depends(load), st: Project
 def update_parameters(body: ParameterUpdates, p: Project = Depends(load), st: ProjectStore = Depends(store)):
     validated = []
     for update in body.updates:
-        if update.key.startswith(("calc.", "rules.")):
+        if p.delivery is not None and p.delivery.design.equipment and update.key.startswith('equipment.'):
+            raise HTTPException(409, 'Edit equipment in the Engineering delivery schedule')
+        if update.key.startswith(("calc.", "rules.", "delivery.")):
             raise HTTPException(400, "Calculated and rule parameters cannot be edited")
         if update.remove:
             import re
@@ -288,7 +304,9 @@ def bess(p: Project = Depends(load), st: ProjectStore = Depends(store)) -> dict[
 
 @app.post("/api/projects/{pid}/documents/generate")
 def generate(only: list[str] | None = None, p: Project = Depends(load), st: ProjectStore = Depends(store)) -> dict[str, Any]:
-    if only is not None and (not only or any(doc_id not in GENERATORS for doc_id in only)):
+    from ..delivery.documents import GENERATORS as delivery_generators
+    known = set(GENERATORS) | (set(delivery_generators) if p.delivery is not None else set())
+    if only is not None and (not only or any(doc_id not in known for doc_id in only)):
         raise HTTPException(422, "Select valid document IDs")
     p.calculation_notes = run_all(p)
     done, errors = generate_all(p, only)
@@ -333,6 +351,8 @@ def signoff(body: SignOff, p: Project = Depends(load), st: ProjectStore = Depend
 @app.get("/api/projects/{pid}/package")
 def package(mode: Literal["draft", "final"] = "draft", p: Project = Depends(load),
             st: ProjectStore = Depends(store)) -> Response:
+    if mode == "final":
+        raise HTTPException(409, "Use Engineering delivery to check and freeze a scoped final release; activate it first for legacy projects")
     try:
         data = build_package(p, mode)
     except PackageBlocked as e:
@@ -344,6 +364,12 @@ def package(mode: Literal["draft", "final"] = "draft", p: Project = Depends(load
 
 @app.post("/api/projects/{pid}/submitted")
 def mark_submitted(p: Project = Depends(load), st: ProjectStore = Depends(store)) -> dict[str, Any]:
+    if p.delivery is not None:
+        from ..delivery.readiness import complete_stage
+        try:
+            complete_stage(p, 'submission', p.delivery.design.milestones.submitted_by or 'employee')
+        except ValueError as e:
+            raise HTTPException(409, str(e))
     p.stage = Stage.SUBMITTED
     p.log("user", "project.submitted")
     st.save(p)
@@ -372,3 +398,7 @@ def respond_rfi(round_no: int, body: RfiRespond, p: Project = Depends(load), st:
         r.closed_at = now()
     st.save(p)
     return summary(p)
+
+# Register modular engineering routes after the existing store/load/summary helpers.
+from ..delivery.api import register as register_delivery
+register_delivery(app, load, store, summary, refresh_design)

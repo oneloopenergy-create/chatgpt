@@ -8,6 +8,7 @@ except ImportError:  # Windows desktop quick start
     fcntl = None
     import msvcrt
 import tempfile
+import shutil
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -83,3 +84,11 @@ class ProjectStore:
     def delete(self, pid: str) -> None:
         with self._lock(pid):
             self._path(pid).unlink(missing_ok=False)
+            # Per-project deletion includes originals and frozen releases; never
+            # remove another project's data or the common uploaded standards.
+            for kind in ('attachments', 'releases'):
+                folder=self.root.parent/kind/pid
+                if folder.is_symlink():
+                    folder.unlink()
+                elif folder.exists():
+                    shutil.rmtree(folder)

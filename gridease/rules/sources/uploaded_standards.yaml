@@ -1,0 +1,32 @@
+id: uploaded_standards
+version: "2026-10-18"
+status: user_supplied_editions_latest_online_not_verified
+sources:
+  - id: AG-NS194-REV5-UPLOAD
+    title: NS194 Inverter Energy Systems
+    edition: Revision 5
+    approved_date: "2026-09-10"
+    sha256: 3315658d09b929a7c0cacb7ce9e646bf42d47e87df9bfafd57c2bc317dd6a071
+    provenance: User-supplied NS194.pdf; original retained outside repository
+    source_profile: NS194-Rev5-20260910
+    citations:
+      - {clause: "4.1.2", pdf_page: 11, subject: "Interface protection >200 kVA, subject to 4.2 exceptions"}
+      - {clause: "5.9.2 / 5.9.3", pdf_page: 13, subject: "Fail-safe release; shunt trip prohibited except approved alternative arrangement"}
+      - {clause: "5.7.4 / 5.8.2", pdf_page: 12, subject: "5 s trip communication loss requirement; 5.8.2 on PDF page 13"}
+      - {clause: "5.10.1", pdf_page: 13, subject: "60 s healthy all-phase supply before reconnection"}
+      - {clause: "Annex A", pdf_page: 18, subject: "Mandatory protection and backup alternatives"}
+      - {clause: "Annex C C1-C3", pdf_page: 20, subject: "Design pack, unambiguous I/O relationship, revision and responsible designer"}
+      - {clause: "Annex D", pdf_page: 21, subject: "Instrument transformer specifications"}
+      - {clause: "Annex H", pdf_page: 27, subject: "Non-AS4777 technical requirements; confirm printed H-10/H-11 against PDF pagination"}
+  - id: AG-NS238-AM0-UPLOAD
+    title: NS238 Supply Quality
+    document_number: NW000-S0040
+    edition: Amendment 0
+    approved_date: "2015-05-04"
+    sha256: 5179e84d899b3399b22942df37f9ab9c9e20b667b240cd225baf3d45f416e8ca
+    provenance: User-supplied ns238.pdf; historical supplied edition, currency not independently verified
+    source_profile: NS238-Am0-20150504
+    citations:
+      - {clause: "6.2.2", pdf_page: 16, subject: "LV network Pst/Plt compatibility levels, not universal customer allocation"}
+      - {clause: "6.2.3 Table 2", pdf_page: 18, subject: "LV voltage harmonic compatibility; THD 8% is not a current harmonic or universal emission limit"}
+      - {clause: "6.2.4", pdf_page: 19, subject: "Site-specific power quality emission allocation / applicable equipment standards"}

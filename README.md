@@ -1,4 +1,4 @@
-# GridEasy — AI engineering platform for Australian distribution network connections (phase 0 prototype)
+# GridEasy — Australian network connection engineering workspace (v0.2)
 
 GridEasy turns the project information for 100 kW – 5 MW commercial and industrial PV and battery projects into a
 **draft** DNSP connection application package. A registered engineer then reviews and signs it.
@@ -7,8 +7,8 @@ GridEasy is a co-pilot for engineers. It does not replace DNSP/AEMO assessment o
 ## Quick start
 
 **Windows:** install [Python 3.11+](https://www.python.org/downloads/) (tick "Add python.exe to PATH"), download or clone
-this repository, then double-click `start.bat`. It creates a virtual environment, installs dependencies, and opens
-http://localhost:8000.
+this repository, then double-click `start.bat`. It creates a virtual environment and installs dependencies. After the
+startup-complete message, open http://localhost:8000.
 
 **macOS / Linux:**
 
@@ -109,3 +109,18 @@ construction-certified CAD drawings. Validate actual installation topology and e
 Run `.venv/bin/python -m pytest -q` for the regression suite. Browser smoke validation covers
 creation, automatic SLD preview, design edits, automatic regeneration, download, invalid-input
 recovery, partial document generation errors, and desktop/mobile layout.
+
+
+## Seven-stage engineering delivery
+
+The **工程交付 · 7 阶段** workspace generates coordinated design and commissioning
+records, tracks original external evidence, enforces sequential readiness checks and
+freezes separate design/commissioning/handover ZIP releases. See
+[the operating guide](docs/engineering-delivery.md) for the complete workflow, source
+editions, evidence responsibilities, calculations and deployment limitations.
+
+The supplied NS194 Rev 5 and NS238 Amendment 0 references are identified by SHA-256;
+the original PDFs are not redistributed in this repository. Upload them as project
+standard evidence and record the responsible engineer's applicability review.
+
+中文操作说明：[七阶段工程交付操作指南](docs/操作指南.md)。

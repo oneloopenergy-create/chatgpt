@@ -216,11 +216,21 @@ GENERATORS: dict[str, Callable[[Project], Document]] = {
 def generate_all(p: Project, only: list[str] | None = None) -> tuple[list[str], dict[str, str]]:
     done, errors = [], {}
     for doc_id, fn in GENERATORS.items():
-        if only and doc_id not in only:
+        if only is not None and doc_id not in only:
             continue
         try:
             p.put_document(fn(p))
             done.append(doc_id)
         except (KeyError, ValueError, TypeError) as e:
             errors[doc_id] = str(e)
+    if p.delivery is not None:
+        from ..delivery.documents import GENERATORS as delivery_generators
+        for doc_id, fn in delivery_generators.items():
+            if only is not None and doc_id not in only:
+                continue
+            try:
+                p.put_document(fn(p))
+                done.append(doc_id)
+            except (KeyError, ValueError, TypeError) as e:
+                errors[doc_id] = str(e)
     return done, errors
