@@ -1,0 +1,29 @@
+[project]
+name = "gridease"
+version = "0.1.0"
+description = "GridEasy — AI engineering platform for Australian distribution-network (DNSP) connections, < 5 MW"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.110",
+  "uvicorn[standard]>=0.29",
+  "pydantic>=2.6",
+  "pyyaml>=6.0",
+  "schemdraw==0.22",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "httpx>=0.27"]
+engineering = ["OpenDSSDirect.py==0.9.4"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["gridease*"]
+
+[tool.setuptools.package-data]
+gridease = ["rules/packs/*.yaml", "rules/sources/*.yaml", "web/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

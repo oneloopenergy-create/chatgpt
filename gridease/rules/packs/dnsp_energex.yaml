@@ -1,0 +1,95 @@
+# Energex rule pack — PRELIMINARY: source-backed candidate rules only (Evidence Pack v0.4 / Source Links v0.3).
+# Technical values remain null until clauses are extracted. Engineering review required before production.
+id: dnsp_energex
+title: Energex connection technical requirements (structured)
+dnsp: Energex
+state: QLD
+version: '0.2'
+verified: false
+source: STNW1175 Release 6 selected clauses (HV only); LV standard STNW1174 not yet
+  read
+inverter_region: null
+connection:
+  lv_max_kva: null
+  mv_voltages_v:
+  - 11000
+  - 22000
+  - 33000
+export:
+  default_static_limit_kw: null
+  zero_export_option: null
+  dynamic_supported: null
+  export_control_response_s: null
+  max_negotiated_without_study_kw: null
+central_protection:
+  required_above_kva: null
+  nvd_required_on_mv: null
+  settings:
+  - function: Overvoltage (stage 1)
+    ansi: '59'
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Overvoltage (stage 2)
+    ansi: '59'
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Undervoltage
+    ansi: '27'
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Overfrequency
+    ansi: 81O
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Underfrequency
+    ansi: 81U
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Rate of change of frequency (ROCOF)
+    ansi: 81R
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Neutral voltage displacement (NVD, MV only)
+    ansi: 59N
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+    mv_only: true
+application_form:
+  template: Energex embedded generation application (form not yet obtained)
+  fields:
+  - field: Applicant / customer name
+    param: site.customer
+  - field: Site address
+    param: site.address
+  - field: NMI
+    param: site.nmi
+  - field: Supply voltage (V)
+    param: connection.supply_voltage_v
+  - field: Existing maximum demand (kVA)
+    param: connection.max_demand_kva
+  - field: PV DC capacity (kWp)
+    param: pv.dc_kwp
+  - field: Total inverter AC capacity (kVA)
+    param: calc.inverter_ac_kva
+  - field: Battery energy (kWh)
+    param: calc.bess_energy_kwh
+  - field: Requested export limit (kW)
+    param: export.requested_kw
+  - field: Export control method
+    param: export.scheme
+  - field: Inverter region setting
+    param: inverter.region
+  - field: Licensed electrical contractor number
+    param: contractor.licence_no
+package_order:
+- application_form
+- sld
+- protection_settings
+- equipment_list
+- export_scheme
+- site_plan
+approval: research_seed
+sources: {}
+rules: []
+include:
+- shared_qld_stnw1175

@@ -1,0 +1,163 @@
+# Endeavour Energy rule pack — PRELIMINARY: source-backed candidate rules only (Evidence Pack v0.4 / Source Links v0.3).
+# Technical values remain null until clauses are extracted. Engineering review required before production.
+id: dnsp_endeavour
+title: Endeavour Energy connection technical requirements (structured)
+dnsp: Endeavour Energy
+state: NSW
+version: '0.2'
+verified: false
+source: PDI 5000 am6 Parts A/B (2025-02-07) — selected clauses; detailed clause extraction
+  pending
+inverter_region: null
+connection:
+  lv_max_kva: null
+  mv_voltages_v:
+  - 11000
+  - 22000
+export:
+  default_static_limit_kw: null
+  zero_export_option: null
+  dynamic_supported: null
+  export_control_response_s: null
+  max_negotiated_without_study_kw: null
+central_protection:
+  required_above_kva: null
+  nvd_required_on_mv: null
+  settings:
+  - function: Overvoltage (stage 1)
+    ansi: '59'
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Overvoltage (stage 2)
+    ansi: '59'
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Undervoltage
+    ansi: '27'
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Overfrequency
+    ansi: 81O
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Underfrequency
+    ansi: 81U
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Rate of change of frequency (ROCOF)
+    ansi: 81R
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Neutral voltage displacement (NVD, MV only)
+    ansi: 59N
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+    mv_only: true
+application_form:
+  template: Endeavour Energy embedded generation application (form not yet obtained)
+  fields:
+  - field: Applicant / customer name
+    param: site.customer
+  - field: Site address
+    param: site.address
+  - field: NMI
+    param: site.nmi
+  - field: Supply voltage (V)
+    param: connection.supply_voltage_v
+  - field: Existing maximum demand (kVA)
+    param: connection.max_demand_kva
+  - field: PV DC capacity (kWp)
+    param: pv.dc_kwp
+  - field: Total inverter AC capacity (kVA)
+    param: calc.inverter_ac_kva
+  - field: Battery energy (kWh)
+    param: calc.bess_energy_kwh
+  - field: Requested export limit (kW)
+    param: export.requested_kw
+  - field: Export control method
+    param: export.scheme
+  - field: Inverter region setting
+    param: inverter.region
+  - field: Licensed electrical contractor number
+    param: contractor.licence_no
+package_order:
+- application_form
+- sld
+- protection_settings
+- equipment_list
+- export_scheme
+- site_plan
+approval: research_seed
+sources:
+  SRC007:
+    document: Model standing offer Schedule 3 10kW–5MW (Nov 2023)
+    authority: Endeavour Energy
+    scope: 10kW–5MW
+    status: Verified PDF; currency to check
+    url: https://www.endeavourenergy.com.au/__data/assets/pdf_file/0031/86890/Endeavour-Energy-Standard-Connection-MSO-November-2023-REBRANDED.pdf
+  END-PDIA:
+    document: PDI 5000 am6 Part A — Protection of Embedded Generation (31 pp)
+    authority: Endeavour Energy
+    scope: EG protection
+    status: PDF readable on web; clause extraction pending
+    url: https://www.endeavourenergy.com.au/media/Endeavour-Energy/ASP-Technical-Standards/Standards/PDI---PROTECTION-DESIGN-INSTRUCTION/PDI5000---Protection-of-Embedded-Generation/PDI-5000-am6---Protection-of-Embedded-Generation/PDI-5000-am6-Part-A---Protection-of-Embedded-Generation.pdf
+  END-PDIB:
+    document: PDI 5000 am6 Part B — Protection of Embedded Generation (38 pp)
+    authority: Endeavour Energy
+    scope: EG protection
+    status: PDF readable on web; clause extraction pending
+    url: https://www.endeavourenergy.com.au/media/Endeavour-Energy/ASP-Technical-Standards/Standards/PDI---PROTECTION-DESIGN-INSTRUCTION/PDI5000---Protection-of-Embedded-Generation/PDI-5000-am6---Protection-of-Embedded-Generation/PDI-5000-am6-Part-B---Protection-of-Embedded-Generation.pdf
+rules:
+- id: EE-001
+  trigger: LV IES >=30 and <1500 kVA
+  when:
+    all:
+    - field: connection_phase
+      op: eq
+      value: LV
+    - field: aggregate_inverter_kva
+      op: gte
+      value: 30
+    - field: aggregate_inverter_kva
+      op: lt
+      value: 1500
+  outcome: Within PDI 5000 LV protection scope; classify connection per Table 1
+  source: END-PDIA
+  clause: PDI 5000 Part A 1.1.1 Table 1
+  confidence: Verified source
+  action: classify_lv_protection
+  flag: lv_protection_scope
+  engineering_review: Review
+  severity: warning
+- id: EE-002
+  trigger: LV IES >500 kVA
+  when:
+    all:
+    - field: connection_phase
+      op: eq
+      value: LV
+    - field: aggregate_inverter_kva
+      op: gt
+      value: 500
+  outcome: Protection review consultation with Endeavour Energy (secondary systems)
+  source: END-PDIA
+  clause: PDI 5000 Part A 1.1.1
+  confidence: Verified source
+  action: require_protection_consultation
+  flag: protection_consultation_required
+  engineering_review: Review
+  severity: warning
+- id: EE-003
+  trigger: ESS present
+  when:
+    field: bess_pcs_kva
+    op: gt
+    value: 0
+  outcome: Include ESS inverter in aggregate inverter nameplate (GridEasy aggregate
+    kVA already sums PV inverters and BESS PCS)
+  source: END-PDIA
+  clause: PDI 5000 Part A 4.4
+  confidence: Verified source
+  action: check_aggregate_includes_ess
+  engineering_review: Review
+  severity: info

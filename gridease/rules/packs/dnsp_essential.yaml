@@ -1,0 +1,175 @@
+# Essential Energy rule pack — PRELIMINARY: source-backed candidate rules only (Evidence Pack v0.4 / Source Links v0.3).
+# Technical values remain null until clauses are extracted. Engineering review required before production.
+id: dnsp_essential
+title: Essential Energy connection technical requirements (structured)
+dnsp: Essential Energy
+state: NSW
+version: '0.2'
+verified: false
+source: Essential Energy HV connection pages; CERM1135 controlled version pending
+inverter_region: null
+connection:
+  lv_max_kva: null
+  mv_voltages_v:
+  - 11000
+  - 22000
+export:
+  default_static_limit_kw: null
+  zero_export_option: null
+  dynamic_supported: null
+  export_control_response_s: null
+  max_negotiated_without_study_kw: null
+central_protection:
+  required_above_kva: null
+  nvd_required_on_mv: null
+  settings:
+  - function: Overvoltage (stage 1)
+    ansi: '59'
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Overvoltage (stage 2)
+    ansi: '59'
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Undervoltage
+    ansi: '27'
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Overfrequency
+    ansi: 81O
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Underfrequency
+    ansi: 81U
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Rate of change of frequency (ROCOF)
+    ansi: 81R
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+  - function: Neutral voltage displacement (NVD, MV only)
+    ansi: 59N
+    setting: TBC — DNSP standard not yet acquired
+    trip_time_s: null
+    mv_only: true
+application_form:
+  template: Essential Energy embedded generation application (form not yet obtained)
+  fields:
+  - field: Applicant / customer name
+    param: site.customer
+  - field: Site address
+    param: site.address
+  - field: NMI
+    param: site.nmi
+  - field: Supply voltage (V)
+    param: connection.supply_voltage_v
+  - field: Existing maximum demand (kVA)
+    param: connection.max_demand_kva
+  - field: PV DC capacity (kWp)
+    param: pv.dc_kwp
+  - field: Total inverter AC capacity (kVA)
+    param: calc.inverter_ac_kva
+  - field: Battery energy (kWh)
+    param: calc.bess_energy_kwh
+  - field: Requested export limit (kW)
+    param: export.requested_kw
+  - field: Export control method
+    param: export.scheme
+  - field: Inverter region setting
+    param: inverter.region
+  - field: Licensed electrical contractor number
+    param: contractor.licence_no
+package_order:
+- application_form
+- sld
+- protection_settings
+- equipment_list
+- export_scheme
+- site_plan
+approval: research_seed
+sources:
+  ESS-INDEX:
+    document: HV connection documents index (CEOP8079, CERM1135, CEOS7903 listed)
+    authority: Essential Energy
+    scope: HV EG
+    status: Official index confirmed; controlled versions need check
+    url: https://www.essentialenergy.com.au/our-network/connecting-to-the-network/hv-connections-documents
+  ESS-HV:
+    document: HV connections and large embedded generators — process and time estimates
+    authority: Essential Energy
+    scope: HV EG
+    status: Official page checked (2–3 years overall, indicative)
+    url: https://www.essentialenergy.com.au/our-network/connecting-to-the-network/hv-connections-and-large-embedded-generators
+  ESS-SCADA:
+    document: Emergency backstop and SCADA requirements (HV)
+    authority: Essential Energy
+    scope: HV EG
+    status: Official page checked
+    url: https://www.essentialenergy.com.au/our-network/connecting-to-the-network/Emergency-backstop-and-SCADA-requirements
+  ESS-CERM1135:
+    document: CERM1135 (2021 original, 2021-08-17)
+    authority: Essential Energy
+    scope: HV EG <5 MW
+    status: Version pending; binary not downloaded
+    url: https://www.essentialenergy.com.au/-/media/Project/EssentialEnergy/Website/Files/Our-Network/CERM1135.pdf
+rules:
+- id: ES-R008
+  trigger: HV embedded generator (NSW Data Master R008)
+  when:
+    field: connection_phase
+    op: eq
+    value: HV
+  outcome: Retrieve HV technical, protection, SCADA and connection process documents
+    (CEOP8079, CERM1135, CEOS7903, CEOP8012); allow 2–3 years overall (indicative)
+  source: ESS-INDEX;ESS-HV
+  clause: Official index
+  confidence: Index verified; clauses pending
+  action: require_hv_documents
+  flag: hv_review
+  engineering_review: Not executable
+  severity: warning
+- id: ESS-HV-001
+  trigger: HV EG; connection agreement signed on or after 2027-01-01 (or date unknown)
+  when:
+    all:
+    - field: connection_phase
+      op: eq
+      value: HV
+    - any:
+      - field: connection_agreement_date
+        op: missing
+      - field: connection_agreement_date
+        op: gte
+        value: '2027-01-01'
+  outcome: SCADA remote terminal unit and control interface required
+  source: ESS-SCADA
+  clause: Official page
+  confidence: Official page checked
+  action: require_scada_rtu
+  flag: scada_rtu_required
+  engineering_review: 'Yes: alternative communications may be approved for smaller
+    systems'
+  severity: warning
+  effective_from: '2027-01-01'
+- id: ES-001
+  trigger: HV EG <5 MW
+  when:
+    all:
+    - field: connection_phase
+      op: eq
+      value: HV
+    - any:
+      - field: generation_kw
+        op: missing
+      - field: generation_kw
+        op: lt
+        value: 5000
+  outcome: Confirm the current controlled version of CERM1135 before use (2021 original
+    on file)
+  source: ESS-CERM1135
+  clause: Scope
+  confidence: Version pending
+  action: confirm_document_version
+  flag: document_version_review
+  engineering_review: Review
+  severity: warning

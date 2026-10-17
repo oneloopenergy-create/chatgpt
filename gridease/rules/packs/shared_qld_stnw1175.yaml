@@ -1,0 +1,151 @@
+# Energex/Ergon shared rules from STNW1175 Release 6 (DNSP Evidence Pack v0.4 + Source Links v0.3)
+id: shared_qld_stnw1175
+note: Shared by Energex and Ergon packs. STNW1175 web index shows 2026-08-18 but the
+  opened PDF is Release 6 dated 2025-03-05, effective 2025-02-23 — verify the controlled
+  version.
+sources:
+  QLD-STNW1175:
+    document: STNW1175 Standard for HV EG Connections, Release 6 (2025-03-05; effective
+      2025-02-23; 62 pp)
+    authority: Energex/Ergon
+    scope: HV EG
+    status: PDF clauses checked; index date (2026-08-18) differs from PDF release
+      date — verify controlled version
+    url: https://www.energex.com.au/__data/assets/pdf_file/0020/1072550/Standard-for-High-Voltage-EG-Connections-STNW1175-2946177.pdf
+  QLD-STNW1174:
+    document: STNW1174 Standard for LV EG Connections
+    authority: Energex/Ergon
+    scope: LV EG
+    status: Link identified; not yet read
+    url: https://www.energex.com.au/__data/assets/pdf_file/0005/1072553/Standard-for-Low-Voltage-EG-Connections-3055320.pdf
+  QLD-INDEX:
+    document: Large customer standards, manuals and fact sheets (incl. A2 checklist,
+      RPEQ forms)
+    authority: Energex/Ergon
+    scope: Large customers
+    status: Official index confirmed
+    url: https://www.energex.com.au/our-services/connections/large-customer-connections/standards-manuals-and-fact-sheets
+rules:
+- id: QLD-HV-001
+  trigger: HV EG class A2, not standby/bumpless and no synchronous rotating machine
+  when:
+    all:
+    - field: connection_phase
+      op: eq
+      value: HV
+    - field: class_a1_a2_b
+      op: eq
+      value: A2
+    - field: standby_or_bumpless
+      op: eq
+      value: false
+    - field: synchronous_rotating_machine
+      op: eq
+      value: false
+  outcome: Site-specific tuned EMT model (PSCAD) required
+  source: QLD-STNW1175
+  clause: 4.14.2 Table 16
+  confidence: PDF clause checked
+  action: require_emt_model
+  flag: emt_model_required
+  engineering_review: 'Yes: confirm class boundaries for project'
+  severity: warning
+  effective_from: '2025-02-23'
+- id: QLD-HV-001X
+  trigger: HV EG where class or STNW1175 Table 16 exceptions are not yet determined
+  when:
+    all:
+    - field: connection_phase
+      op: eq
+      value: HV
+    - any:
+      - field: class_a1_a2_b
+        op: missing
+      - all:
+        - field: class_a1_a2_b
+          op: eq
+          value: A2
+        - any:
+          - field: standby_or_bumpless
+            op: missing
+          - field: synchronous_rotating_machine
+            op: missing
+  outcome: Determine EG class (A1/A2/B) and Table 16 exceptions (standby/bumpless,
+    synchronous rotating machines) before deciding on EMT modelling
+  source: QLD-STNW1175
+  clause: 4.14.2 Table 16
+  confidence: PDF clause checked
+  action: determine_eg_class
+  flag: eg_class_review
+  engineering_review: 'Yes'
+  severity: warning
+  notes: 'GridEasy guard: the EMT requirement has exceptions and must not be applied
+    unconditionally'
+- id: QLD-HV-002
+  trigger: HV EG class A1 with very low SCR (typically SCR < 3)
+  when:
+    all:
+    - field: connection_phase
+      op: eq
+      value: HV
+    - field: class_a1_a2_b
+      op: eq
+      value: A1
+    - field: scr
+      op: lt
+      value: 3
+  outcome: DNSP may request an EMT model
+  source: QLD-STNW1175
+  clause: 4.14.2 Table 16 note 2
+  confidence: PDF clause checked
+  action: flag_possible_emt_request
+  flag: emt_model_possible
+  engineering_review: 'Yes: ''very low SCR'' threshold is indicative'
+  severity: warning
+  effective_from: '2025-02-23'
+- id: QLD-HV-003
+  trigger: HV EG model and analysis
+  when:
+    field: connection_phase
+    op: eq
+    value: HV
+  outcome: Model and analysis must be RPEQ certified
+  source: QLD-STNW1175
+  clause: 4.14.2
+  confidence: PDF clause checked
+  action: require_rpeq_model_certification
+  flag: rpeq_required
+  engineering_review: 'Yes'
+  severity: warning
+  effective_from: '2025-02-23'
+- id: QLD-HV-004
+  trigger: HV EG (merges Source Links v0.3 QLD-001 / QLD-002)
+  when:
+    field: connection_phase
+    op: eq
+    value: HV
+  outcome: RPEQ certified design and RPEQ certified commissioning plan, unless a stated
+    exception applies
+  source: QLD-STNW1175
+  clause: 1.3 and Appendix G
+  confidence: PDF clause checked
+  action: require_rpeq_design_and_commissioning
+  flag: rpeq_required
+  engineering_review: 'Yes: check stated exceptions; do not assume none apply'
+  severity: warning
+  effective_from: '2025-02-23'
+- id: QLD-HV-005
+  trigger: HV EG
+  when:
+    field: connection_phase
+    op: eq
+    value: HV
+  outcome: Collect static project fields per STNW1175 Appendix D
+  source: QLD-STNW1175
+  clause: 4.12 and Appendix D
+  confidence: PDF clause checked
+  action: require_appendix_d_fields
+  flag: appendix_d_fields_required
+  engineering_review: No for collection
+  severity: info
+  effective_from: '2025-02-23'

@@ -1,0 +1,44 @@
+# AS/NZS 4777.2 inverter region settings (Australia A / B / C / New Zealand)
+# WARNING verified=false: values compiled from public material. An engineer must check every value
+# against the licensed standard before use.
+id: as_nzs_4777_2
+title: AS/NZS 4777.2:2020 Grid connection of energy systems via inverters — Inverter requirements
+version: "2020+A1:2021"
+verified: false
+source: "Standards Australia AS/NZS 4777.2:2020 (licensed copy required)"
+regions:
+  australia_a:
+    volt_var:   # voltage (V) -> reactive power (% of rated apparent power, + = supplying)
+      - {v: 207, q_pct: 44}
+      - {v: 220, q_pct: 0}
+      - {v: 240, q_pct: 0}
+      - {v: 258, q_pct: -60}
+    volt_watt:  # voltage (V) -> active power limit (% of rated)
+      - {v: 253, p_pct: 100}
+      - {v: 260, p_pct: 20}
+  australia_b:
+    volt_var:
+      - {v: 205, q_pct: 30}
+      - {v: 220, q_pct: 0}
+      - {v: 235, q_pct: 0}
+      - {v: 255, q_pct: -40}
+    volt_watt:
+      - {v: 250, p_pct: 100}
+      - {v: 260, p_pct: 20}
+  australia_c:
+    volt_var:
+      - {v: 215, q_pct: 44}
+      - {v: 230, q_pct: 0}
+      - {v: 240, q_pct: 0}
+      - {v: 255, q_pct: -60}
+    volt_watt:
+      - {v: 253, p_pct: 100}
+      - {v: 260, p_pct: 20}
+passive_protection:   # inverter-integrated passive protection (common to all regions)
+  - {function: "Undervoltage V<2", ansi: "27", setting: "70 V", trip_time_s: 1.0}
+  - {function: "Undervoltage V<1", ansi: "27", setting: "180 V", trip_time_s: 10.0}
+  - {function: "Overvoltage V>1", ansi: "59", setting: "265 V", trip_time_s: 1.0}
+  - {function: "Overvoltage V>2", ansi: "59", setting: "275 V", trip_time_s: 0.2}
+  - {function: "Sustained overvoltage (10-min average)", ansi: "59", setting: "258 V", trip_time_s: 3.0}
+  - {function: "Underfrequency F<", ansi: "81U", setting: "47 Hz", trip_time_s: 2.0}
+  - {function: "Overfrequency F>", ansi: "81O", setting: "52 Hz", trip_time_s: 0.2}

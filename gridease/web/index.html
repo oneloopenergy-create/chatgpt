@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GridEasy</title>
+<style>
+:root{--fg:#1d1d1f;--muted:#86868b;--line:#e7e7ec;--bg:#f5f5f7;--card:#fff;--accent:#0071e3;--err:#c93434;--warn:#a86612;--ok:#24834b;--info:#626477}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--fg);background:var(--bg);letter-spacing:-.015em}button,input,textarea,select{font:inherit}button,a,input,textarea,select{ -webkit-tap-highlight-color:transparent}button,a{transition:background .18s,box-shadow .18s,transform .18s}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #0071e355;outline-offset:3px}
+header{height:76px;padding:0 32px;display:flex;align-items:center;justify-content:space-between;background:#ffffffd9;backdrop-filter:blur(24px);border-bottom:1px solid #e7e7ec;position:sticky;top:0;z-index:10}.brand{display:flex;align-items:center;gap:11px}.brand b{font-size:21px;letter-spacing:-1px}.brandmark{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:#1d1d1f;color:white;font-size:23px;font-weight:600}.brand small{border-left:1px solid var(--line);padding-left:16px;margin-left:12px;color:var(--muted);font-size:12px}.header-status{font-size:12px;color:#62626a;display:flex;align-items:center;gap:8px}.status-dot{height:7px;width:7px;background:#34c759;border-radius:50%}
+.wrap{display:grid;grid-template-columns:288px minmax(0,1fr);min-height:calc(100vh - 76px)}aside{padding:30px 22px;background:#fafafc;border-right:1px solid var(--line)}.eyebrow{font-size:10px;font-weight:650;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted)}h2{font-size:15px;margin:24px 0 12px;letter-spacing:-.3px}aside h2:first-of-type{margin-top:18px}aside textarea{min-height:156px;font-size:12px;line-height:1.7}aside .row button{width:100%}.sidebar-note{font-size:11px;color:var(--muted);line-height:1.7;margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}input,textarea,select{width:100%;padding:11px 12px;background:#fff;border:1px solid #dedee5;border-radius:10px;color:var(--fg);transition:border-color .18s,box-shadow .18s}input::placeholder,textarea::placeholder{color:#96969e}textarea{min-height:140px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:#0071e3;box-shadow:0 0 0 3px #0071e310;outline:none}button{padding:10px 17px;border:1px solid transparent;background:var(--accent);color:white;border-radius:999px;cursor:pointer;font-weight:550;font-size:12px;line-height:1.5}button:hover{background:#0077ed;box-shadow:0 4px 12px #0071e31c}button:active{transform:scale(.98)}button.ghost{background:#fff;color:var(--fg);border-color:var(--line)}button.ghost:hover{background:#f5f5f7}button.sm{padding:5px 12px;font-size:11px}button:disabled{cursor:not-allowed;opacity:.45;box-shadow:none}
+.plist{margin:0 -8px}.plist a{display:block;padding:12px;border-radius:12px;color:inherit;text-decoration:none;font-size:13px;font-weight:550;margin-bottom:5px;overflow-wrap:anywhere}.plist a.on{background:#e9f2ff;color:#0065cd}.plist a:hover{background:#ededf2}.plist small{display:block;font-size:10px;color:var(--muted);font-weight:400;margin-top:4px}.plist .muted{padding:12px;font-size:12px}main{min-width:0;padding:38px 40px 64px;overflow:auto}.workspace-top{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:28px}.workspace-top h1{font-size:28px;line-height:1.2;letter-spacing:-1px;margin:8px 0}.project-meta{font-size:11px;color:var(--muted)}.steps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));margin-bottom:28px;gap:8px}.step{position:relative;padding:15px 12px;background:#ffffff88;border:1px solid var(--line);border-radius:14px;color:var(--muted);font-size:10px;line-height:1.6}.step b{display:block;font-size:11px;font-weight:600;color:#66666f;margin-bottom:4px}.step.cur{background:#fff;border-color:#93c4ff;box-shadow:0 3px 14px #0071e308}.step.cur b{color:var(--accent)}.step.done{background:#eef7f1;border-color:#d9ecdf}.step.done b{color:var(--ok)}.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:24px;overflow-x:auto;padding-bottom:12px}.tabs button{white-space:nowrap;background:transparent;color:#74747c;padding:8px 12px;box-shadow:none;font-size:11px}.tabs button.on{color:var(--fg);background:#fff;box-shadow:0 2px 7px #00000008}.tabs button:hover{background:#eaeaee}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:18px;box-shadow:0 3px 16px #00000002;overflow:auto}.card p:first-child{margin-top:0}table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:13px 12px;border-bottom:1px solid #f0f0f3;vertical-align:top;font-size:12px}th{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.4px}tr:last-child td{border-bottom:none}code{font-size:11px;overflow-wrap:anywhere}.src{color:var(--muted);font-size:10px;overflow-wrap:anywhere;margin-top:4px}.tag{display:inline-block;padding:3px 8px;border-radius:6px;font-size:10px;background:#f2f2f7;font-weight:500}.error{color:var(--err)}.warning{color:var(--warn)}.info{color:var(--info)}.ok{color:var(--ok)}details{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:10px;background:#fff}summary{cursor:pointer}details dl{display:grid;grid-template-columns:90px minmax(0,1fr);gap:10px;margin:18px 0 0;font-size:12px}dt{color:var(--muted)}dd{margin:0;overflow-wrap:anywhere}iframe,.preview{width:100%;height:560px;border:1px solid var(--line);border-radius:16px;background:#fff}pre{white-space:pre-wrap;background:#fff;border:1px solid var(--line);padding:20px;border-radius:14px;max-height:560px;overflow:auto}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row>*{flex:0 0 auto}.muted{color:var(--muted)}#toast{position:fixed;right:24px;bottom:24px;background:#252528ed;backdrop-filter:blur(20px);color:#fff;padding:15px 22px;border-radius:16px;display:none;max-width:min(420px,calc(100vw - 48px));z-index:50;box-shadow:0 8px 40px #0002}
+.welcome{max-width:940px;margin:34px auto}.welcome-label{color:var(--accent);font-size:12px;font-weight:600}.welcome h1{font-size:clamp(36px,4.3vw,60px);font-weight:650;letter-spacing:-2.5px;line-height:1.08;margin:18px 0 22px;max-width:680px}.welcome h1 span{color:#98989f}.welcome-lead{font-size:16px;line-height:1.7;color:#7c7c85;max-width:510px;margin-bottom:26px}.welcome-action{display:inline-flex;align-items:center;gap:16px}.welcome-action span{font-size:11px;color:var(--muted)}.energy-visual{margin:44px 0 26px;background:linear-gradient(120deg,#eff5fc,#fff 55%,#f1f6f3);border:1px solid #fff;border-radius:26px;padding:32px;box-shadow:0 12px 35px #26334e05}.visual-head{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}.flow{display:flex;align-items:center;justify-content:center;gap:16px;padding:40px 0 30px}.flow-node{text-align:center;flex:0 0 94px}.flow-icon{width:64px;height:64px;border:1px solid #e5e9ef;box-shadow:0 6px 16px #00000004;background:#ffffffd9;border-radius:19px;margin:0 auto 12px;display:grid;place-items:center;color:#54758d}.flow-icon svg{width:28px;height:28px}.flow-node b{font-size:11px;font-weight:550}.flow-line{height:1px;flex:1;background:linear-gradient(90deg,#b2c9de,#b7d3c3);max-width:100px;position:relative;margin-top:-28px}.flow-line:after{content:'';position:absolute;right:0;top:-2px;width:5px;height:5px;background:#70a5c0;border-radius:50%}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.feature{padding:22px 20px;border-radius:18px;background:#ffffffa6;border:1px solid #e9e9ee}.feature .num{font-size:10px;color:var(--accent);font-weight:650}.feature h3{font-size:13px;margin:10px 0 7px}.feature p{font-size:12px;color:var(--muted);margin:0;line-height:1.7}.welcome-foot{margin-top:24px;font-size:10px;color:var(--muted);text-align:center}
+@media(min-width:1500px){main{padding-left:64px;padding-right:64px}}@media(max-width:1100px){main{padding:28px 22px}.steps{grid-template-columns:repeat(3,1fr)}.workspace-top{align-items:flex-start;flex-direction:column}.brand small{display:none}}@media(max-width:760px){header{height:64px;padding:0 20px}.wrap{grid-template-columns:1fr}.header-status{font-size:10px}aside{padding:22px;border-right:none;border-bottom:1px solid var(--line)}aside textarea{min-height:100px}.sidebar-note{display:none}.plist{max-height:180px;overflow:auto}main{padding:24px 18px}.welcome{margin:10px auto}.welcome h1{letter-spacing:-1.5px}.feature-grid{grid-template-columns:1fr}.energy-visual{padding:22px 14px;margin-top:30px}.flow{gap:5px}.flow-node{flex-basis:72px}.flow-icon{width:52px;height:52px}.flow-line{min-width:10px}.welcome-action{align-items:flex-start;flex-direction:column;gap:8px}.card{padding:16px}.row input,.row select{max-width:100%}.steps{gap:6px}.step{padding:10px 8px}.workspace-top h1{font-size:25px}.welcome-lead{font-size:14px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+.design-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:16px 0}.design-grid label{font-size:12px;color:var(--muted)}.design-grid input,.design-grid select{display:block;margin-top:6px;color:var(--fg)}.equipment-row{padding:16px 0;border-top:1px solid var(--line)}.download-link{color:var(--accent);text-decoration:none;padding:10px 14px;font-size:12px;font-weight:550}
+</style>
+</head>
+<body>
+<header><div class="brand"><span class="brandmark" aria-hidden="true">ϟ</span><b>GridEasy</b><small>Connection workspace</small></div><div class="header-status"><span class="status-dot"></span>Engineering prototype</div></header>
+<div class="wrap">
+  <aside>
+    <div class="eyebrow">Your workspace</div><h2>Start something powerful.</h2><label class="src" for="newName">Project name</label>
+    <input id="newName" placeholder="Project name, e.g. Smithfield cold store">
+    <label class="src" for="newBrief" style="display:block;margin-top:14px">Project brief</label><textarea id="newBrief" style="margin-top:6px" placeholder="Project brief (free text), e.g. Ausgrid area cold store, rooftop PV 800 kWp, 3 x SMA STP 110-60 and 2 x Sungrow SG250HX, battery 2 x Sungrow SC125HV totalling 500 kWh, low voltage 400 V, max demand 600 kVA, export limit 150 kW, NMI 4103123456"></textarea>
+    <div class="row" style="margin-top:6px"><button id="createButton" onclick="createProject()">Create project <span aria-hidden="true">&rarr;</span></button></div>
+    <h2 style="margin-top:32px">Projects</h2>
+    <div class="plist" id="plist"></div><p class="sidebar-note">Built for Australian grid connections.<br>Drafts require review and sign-off by a registered engineer.</p>
+  </aside>
+  <main id="main"><section class="welcome"><div class="welcome-label">LESS FRICTION. MORE CONNECTION.</div><h1>Your next connection.<br><span>Beautifully considered.</span></h1><p class="welcome-lead">From the first project brief to a connection-ready draft. One calm workspace for solar, storage and everything in between.</p><div class="welcome-action"><button onclick="document.querySelector('#newName').focus()">Start a new project &rarr;</button><span>Bring your brief. We’ll help connect the details.</span></div><div class="energy-visual"><div class="visual-head"><span>CONNECTED BY DESIGN</span><span>PV + storage → grid</span></div><div class="flow"><div class="flow-node"><div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M5 8h14l2 10H3L5 8Zm7 0v10M4 13h16M9 22h6m-3-4v4M12 1v3M4 3l2 2m14-2-2 2"/></svg></div><b>Solar generation</b></div><div class="flow-line"></div><div class="flow-node"><div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="5" y="5" width="14" height="16" rx="3"/><path d="M9 5V2h6v3m-2 4-4 5h6l-4 4"/></svg></div><b>Battery storage</b></div><div class="flow-line"></div><div class="flow-node"><div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m12 2-7 20m7-20 7 20M8 12h8M6 18h12M8 6h8M3 10l9-4 9 4M8 22l8-10M16 22 8 12"/></svg></div><b>Grid connection</b></div></div></div><div class="feature-grid"><article class="feature"><span class="num">01 / UNDERSTAND</span><h3>A brief. A clearer picture.</h3><p>Turn project details into structured parameters with traceable sources.</p></article><article class="feature"><span class="num">02 / DESIGN</span><h3>Details that connect.</h3><p>Bring calculations, network rules and single line diagrams together.</p></article><article class="feature"><span class="num">03 / PREPARE</span><h3>Ready for your review.</h3><p>Generate a coordinated draft package for engineer review and sign-off.</p></article></div><p class="welcome-foot">Australian DNSP connections · PV & battery projects · 100 kW – 5 MW</p></section></main>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+const STEPS = [["1_intake","1 Smart intake","Brief and files → fields + sources"],["2_rules","2 Rule matching","ENA / DNSP / 4777.2"],
+  ["3_design","3 Design","SLD · protection settings"],["4_compliance","4 Compliance","4777 checks · export limits"],["5_package","5 Sign-off and package","Registered engineer sign-off"]];
+let cur = null, tab = "sld", busy = false, openSequence = 0;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = v => v === null || v === undefined ? "—" : (typeof v === "object" ? JSON.stringify(v) : v);
+function toast(m) { const t = $("#toast"); t.textContent = m; t.style.display = "block"; clearTimeout(t._h); t._h = setTimeout(() => t.style.display = "none", 4000); }
+async function api(path, opt = {}) {
+  const headers = {"Content-Type":"application/json", ...opt.headers};
+  if(cur && opt.method && !['GET','HEAD'].includes(opt.method) && path.startsWith(`/api/projects/${cur.id}/`)) headers['X-Project-Revision'] = String(cur.revision);
+  const r = await fetch(path, { ...opt, headers });
+  if (!r.ok) { let d = await r.text(); try { d = JSON.parse(d).detail; } catch {} if(Array.isArray(d)) d = d.map(x=>`${x.loc?.slice(1).join('.') || 'Input'}: ${x.msg}`).join('; ');
+  throw new Error(typeof d === "string" ? d : JSON.stringify(d)); }
+  return r.status === 204 ? null : r.json();
+}
+async function loadList() {
+  const ps = await api("/api/projects");
+  $("#plist").innerHTML = ps.map(p => `<a href="#" class="${cur && cur.id === p.id ? "on" : ""}" onclick="openProject('${p.id}');return false">${esc(p.name)}<small>${esc(p.dnsp || "DNSP TBC")} · ${p.kva ?? "?"} kVA · ${esc(p.stage)}</small></a>`).join("") || `<div class="muted">No projects yet</div>`;
+}
+async function createProject() {
+  if (busy) return;
+  const name = $("#newName").value.trim(); if (!name) return toast("Please enter a project name");
+  busy = true; document.querySelector("#createButton").disabled = true;
+  try { cur = await api("/api/projects", { method: "POST", body: JSON.stringify({ name, brief: $("#newBrief").value }) }); tab = "sld"; render(); await loadList(); }
+  catch (e) { toast(e.message); }
+  finally { busy = false; document.querySelector("#createButton").disabled = false; }
+}
+async function openProject(id) {
+  if(busy) return;
+  const sequence = ++openSequence;
+  try { const loaded = await api(`/api/projects/${id}`); if(sequence !== openSequence) return; cur = loaded; if (!cur.documents.some(d => d.doc_id === 'sld')) cur = (await api(`/api/projects/${id}/compute`, {method:'POST'})).project; render(); await loadList(); }
+  catch(e) { toast(e.message); }
+}
+async function act(fn) { if(busy) return; busy = true; try { const r = await fn(); if (r && r.project) cur = r.project; else if (r && r.id) cur = r; render(); await loadList(); return r; } catch (e) { toast(e.message); } finally { busy = false; } }
+
+function stepState(id) {
+  const order = STEPS.map(s => s[0]); const st = cur.stage;
+  const i = order.indexOf(id), c = ["submitted","rfi","offer"].includes(st) ? 5 : order.indexOf(st);
+  return i < c ? "done" : i === c ? "cur" : "";
+}
+function render() {
+  const p = cur, errs = p.findings.filter(f => f.severity === "error").length;
+  $("#main").innerHTML = `
+    <div class="workspace-top">
+      <div><div class="eyebrow">Project overview</div><h1>${esc(p.name)}</h1><div class="project-meta">#${p.id} · ${esc(p.stage)}</div></div>
+      <div class="row"><button class="ghost" onclick="openProject(cur.id)">Reload project</button><button class="ghost" onclick="act(()=>api('/api/projects/${p.id}/compute',{method:'POST'}))">Recalculate</button>
+      <button onclick="generateDocuments()">Generate all documents</button></div>
+    </div>
+    <div class="steps">${STEPS.map(s => `<div class="step ${stepState(s[0])}"><b>${s[1]}</b>${s[2]}</div>`).join("")}
+      <div class="step ${["submitted","rfi","offer"].includes(p.stage) ? "cur" : ""}"><b>DNSP review</b>${p.rfi_rounds.length} RFI round(s)</div></div>
+    <div class="tabs">${[["sld","Single line diagram"],["design","Design inputs"],["params",`Parameters (${Object.keys(p.params).length})`],["assume",`Assumptions to confirm (${p.assumptions.length})`],["findings",`Compliance (${errs} errors)`],
+      ["docs",`Documents (${p.documents.length})`],["bess","Battery economics"],["pkg","Package"],["rfi","RFIs"],["intake","Add information"]]
+      .map(([k,l]) => `<button class="${tab===k?"on":""}" onclick="tab='${k}';render()">${l}</button>`).join("")}</div>
+    ${p.calculation_notes?.length ? `<details><summary class="warning">Missing calculation inputs · ${p.calculation_notes.length} steps need attention</summary><ul>${p.calculation_notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul></details>`:''}
+    <div id="pane"></div>`;
+  ({ sld: paneSld, design: paneDesign, params: paneParams, assume: paneAssume, findings: paneFindings, docs: paneDocs, bess: paneBess, pkg: panePkg, rfi: paneRfi, intake: paneIntake })[tab]();
+}
+async function generateDocuments() {
+  const r = await act(()=>api(`/api/projects/${cur.id}/documents/generate`,{method:'POST'}));
+  if(r) { const errors = Object.entries(r.errors); toast(errors.length ? `Generated ${r.generated.length} documents. Needs attention: ${errors.map(([k,v])=>k+': '+v).join('; ')}` : `Generated ${r.generated.length} documents`); tab='docs'; render(); }
+}
+function paneSld() {
+  const d = cur.documents.find(d=>d.doc_id==='sld');
+  const error = cur.document_errors?.sld;
+  const stale = cur.stale_documents.includes('sld');
+  $('#pane').innerHTML = `<div class="card"><div class="row" style="justify-content:space-between"><div><b>Single line diagram</b><div class="src">Automatically generated when you create a project or save design inputs.</div></div><div class="row"><button class="ghost" onclick="tab='design';render()">Edit design inputs</button>${d && !error && !stale ? `<a class="download-link" href="/api/projects/${cur.id}/documents/sld/download">Download SVG</a>`:''}</div></div>${error ? `<p class="warning">Diagram needs attention: ${esc(error)}</p>`:''}${stale ? '<p class="warning">Previous drawing is out of date. Correct the design inputs to regenerate.</p>':''}${d?.todo.length ? `<details style="margin-top:18px"><summary>Review checklist · ${d.todo.length} items</summary><ul>${d.todo.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></details>`:''}</div>${d && !error && !stale ? `<iframe title="Automatically generated single line diagram" src="/api/projects/${cur.id}/documents/sld?v=${cur.revision}"></iframe>` : '<div class="card muted">Complete the design inputs to generate a drawing. Missing values remain TBC; drawings are drafts for engineer review.</div>'}`;
+}
+const designFields = [['site.customer','Customer','text'],['site.address','Site address','text'],['site.nmi','NMI','text'],['connection.supply_voltage_v','Supply voltage (V)','number'],['pv.dc_kwp','PV capacity (kWp)','number'],['export.requested_kw','Export limit (kW)','number'],['connection.max_demand_kva','Maximum demand (kVA)','number'],['connection.transformer_kva','Transformer rating (kVA)','number']];
+let equipmentDraft = {pv:[],bess:[]};
+function paneDesign() {
+  equipmentDraft = {pv:structuredClone(cur.params['equipment.pv_inverters']?.value || []),bess:structuredClone(cur.params['equipment.bess']?.value || [])};
+  $('#pane').innerHTML = `<div class="card"><h2>Project & connection</h2><p class="muted">Save once to recalculate and update the SLD. Enter verified equipment ratings; leave unknown values blank.</p><div class="design-grid"><label>Network (DNSP)<select id="design-dnsp"><option value="">Select network</option>${['Ausgrid','Endeavour Energy','Essential Energy','Energex','Ergon Energy Network'].map(n=>`<option ${cur.params['site.dnsp']?.value===n?'selected':''}>${n}</option>`).join('')}</select></label><label>Topology<select id="design-topology"><option value="">Select topology</option>${[['rooftop_pv','Rooftop PV'],['ground_pv','Ground-mounted PV'],['pv_bess_ac_coupled','PV + battery (AC coupled)'],['mv_kiosk','MV kiosk']].map(([k,n])=>`<option value="${k}" ${cur.params['design.topology']?.value===k?'selected':''}>${n}</option>`).join('')}</select></label>${designFields.map(([k,n,t],i)=>`<label>${n}<input id="design-${i}" type="${t}" ${t==='number'?'min="0" step="any"':''} value="${esc(cur.params[k]?.value ?? '')}"></label>`).join('')}</div></div><div class="card"><div class="row" style="justify-content:space-between"><h2>PV inverters</h2><button class="ghost" onclick="addEquipment('pv')">+ Add inverter</button></div><div id="equipment-pv"></div></div><div class="card"><div class="row" style="justify-content:space-between"><h2>Battery systems</h2><button class="ghost" onclick="addEquipment('bess')">+ Add battery</button></div><div id="equipment-bess"></div></div><button id="saveDesign" onclick="saveDesign()">Save & update diagram</button>`;
+  renderEquipment('pv');renderEquipment('bess');
+}
+function renderEquipment(kind) {
+ const battery=kind==='bess';
+ $('#equipment-'+kind).innerHTML=equipmentDraft[kind].map((e,i)=>`<div class="equipment-row"><b>${battery?'Battery':'Inverter'} ${i+1}</b><div class="design-grid">${[['manufacturer','Manufacturer','text'],['model','Model','text'],['qty','Quantity','number'],[battery?'pcs_kva':'rated_ac_kva','AC rating per unit (kVA)','number'],[battery?'energy_kwh':'dc_kwp',battery?'Energy per unit (kWh)':'Array capacity (kWp)','number']].map(([k,n,t])=>`<label>${n}<input aria-label="${n}" type="${t}" ${t==='number'?'min="0" step="any"':''} value="${esc(e[k] ?? '')}" oninput="equipmentDraft['${kind}'][${i}]['${k}']=this.value===''?null:${t==='number'?'Number(this.value)':'this.value'}"></label>`).join('')}</div><button class="ghost sm" onclick="equipmentDraft['${kind}'].splice(${i},1);renderEquipment('${kind}')">Remove</button></div>`).join('') || '<p class="muted">No equipment added.</p>';
+}
+function addEquipment(kind){equipmentDraft[kind].push({manufacturer:'',model:'',qty:1});renderEquipment(kind);}
+async function saveDesign() {
+ const updates=[];
+ for(const [key,id] of [['site.dnsp','design-dnsp'],['design.topology','design-topology']]){const value=document.getElementById(id).value;if(value)updates.push({key,value});else if(cur.params[key])updates.push({key,value:null,remove:true});}
+ designFields.forEach(([key,n,t],i)=>{const v=document.getElementById('design-'+i).value.trim();if(v!=='')updates.push({key,value:t==='number'?Number(v):v,unit:cur.params[key]?.unit ?? null});else if(cur.params[key])updates.push({key,value:null,remove:true});});
+ updates.push({key:'equipment.pv_inverters',value:equipmentDraft.pv},{key:'equipment.bess',value:equipmentDraft.bess});
+ const button=$('#saveDesign');button.disabled=true;button.textContent='Saving…';
+ try{const r=await act(()=>api(`/api/projects/${cur.id}/parameters`,{method:'PUT',body:JSON.stringify({updates})}));if(r){tab='sld';render();toast(r.document_errors?.sld?'Saved. Diagram needs more information.':'Design saved. Diagram updated.');}}
+ finally{if(button.isConnected){button.disabled=false;button.textContent='Save & update diagram';}}
+}
+
+function paramRow(k, v, withConfirm) {
+  const editable = !k.startsWith("calc.") && !k.startsWith("rules.");
+  return `<tr><td><code>${esc(k)}</code></td><td>${esc(fmt(v.value))} ${esc(v.unit || "")}</td><td>v${v.version}</td>
+    <td><span class="tag">${esc(v.source.kind)}</span><div class="src">${esc(v.source.ref)}${v.source.note ? " · " + esc(v.source.note) : ""}</div></td>
+    <td>${v.is_assumption ? `<span class="warning">Unconfirmed</span>` : v.confirmed_by ? `<span class="ok">✓ ${esc(v.confirmed_by)}</span>` : ""}</td>
+    <td class="row">${editable ? `<button class="sm ghost" onclick="editParam(${esc(JSON.stringify(k))})">Edit</button>` : ""}
+    ${withConfirm && v.is_assumption ? `<button class="sm" onclick="confirmParam(${esc(JSON.stringify(k))})">Confirm</button>` : ""}</td></tr>`;
+}
+function paneParams() {
+  const ps = cur.params;
+  $("#pane").innerHTML = `<div class="card"><div class="row" style="margin-bottom:8px"><input id="nk" placeholder="Parameter key, e.g. design.export_limiter" style="width:260px">
+    <input id="nv" placeholder='Value (JSON or text)' style="width:280px"><input id="nu" placeholder="Unit" style="width:80px"><button onclick="addParam()">Save</button></div>
+    <table><tr><th>Parameter</th><th>Value</th><th>Version</th><th>Source</th><th>Status</th><th></th></tr>
+    ${Object.entries(ps).map(([k, v]) => paramRow(k, v, true)).join("")}</table></div>`;
+}
+function paneAssume() {
+  const ks = cur.assumptions;
+  $("#pane").innerHTML = `<div class="card"><p class="muted">Values extracted by AI or set by default. An engineer must check and confirm each one before it can enter a final document.</p>
+    ${ks.length ? `<table>${ks.map(k => paramRow(k, cur.params[k], true)).join("")}</table>
+    <div class="row" style="margin-top:8px"><input id="eng" placeholder="Confirming engineer name" style="width:200px"><button onclick="confirmAll()">Confirm all</button></div>` : `<div class="ok">No assumptions awaiting confirmation</div>`}</div>`;
+}
+function paneFindings() {
+  const fs = cur.findings;
+  $("#pane").innerHTML = fs.length ? fs.map(f => `<details><summary><span class="tag ${f.severity}">${f.severity}</span> ${esc(f.title)}</summary>
+    <dl><dt>Clause</dt><dd>${esc(f.clause)}</dd><dt>Parameters</dt><dd>${f.params.map(x => `<code>${esc(x)}</code>`).join(" ") || "—"}</dd>
+    <dt>Issue</dt><dd>${esc(f.detail)}</dd><dt>Suggested fix</dt><dd>${esc(f.suggestion)}</dd></dl></details>`).join("") : `<div class="card ok">All checks passed</div>`;
+}
+function paneDocs() {
+  const ds = cur.documents;
+  $("#pane").innerHTML = `<div class="card">${Object.keys(cur.document_errors || {}).length ? `<div class="warning">Some documents need additional information:<ul>${Object.entries(cur.document_errors).map(([k,v])=>`<li>${esc(k)}: ${esc(v)}</li>`).join('')}</ul></div>` : ''}<table><tr><th>Document</th><th>Status</th><th>Sign-off</th><th>To do</th><th></th></tr>
+    ${ds.map(d => `<tr><td>${esc(d.title)}<div class="src">${esc(d.filename)}</div></td>
+      <td>${cur.stale_documents.includes(d.doc_id) ? `<span class="error">Stale</span>` : esc(d.status)}</td>
+      <td>${d.requires_signoff ? (d.signed ? `<span class="ok">Signed off</span>` : `<span class="warning">Registered engineer sign-off required</span>`) : "—"}</td>
+      <td>${d.todo.map(esc).join("<br>") || "—"}</td><td><button class="sm ghost" onclick="viewDoc('${d.doc_id}')">View</button></td></tr>`).join("")}</table></div>
+    ${ds.length ? `<div class="card"><b>Registered engineer sign-off</b>
+      <div class="row" style="margin-top:8px"><input id="sName" placeholder="Reviewer name" style="width:150px">
+      <select id="sType" style="width:120px"><option>RPEQ</option><option>NER</option><option>VIC-RBP</option><option>NSW-DBP</option></select>
+      <input id="sNo" placeholder="Registration number" style="width:130px">
+      ${ds.filter(d => d.requires_signoff).map(d => `<label><input type="checkbox" class="sdoc" value="${d.doc_id}" checked style="width:auto"> ${esc(d.title)}</label>`).join("")}
+      <button onclick="signDocs()">Sign off</button></div></div>` : ""}
+    <div id="docview"></div>`;
+}
+async function viewDoc(id) {
+  const d = cur.documents.find(x => x.doc_id === id), url = `/api/projects/${cur.id}/documents/${id}`;
+  if (d.filename.endsWith(".html") || d.filename.endsWith(".svg")) $("#docview").innerHTML = `<iframe title="Document preview" src="${url}"></iframe>`;
+  else $("#docview").innerHTML = `<pre>${esc(await (await fetch(url)).text())}</pre>`;
+}
+async function paneBess() {
+  const projectId = cur.id;
+  $("#pane").innerHTML = `<div class="card muted">Calculating…</div>`;
+  try {
+    const r = await api(`/api/projects/${projectId}/bess`, { method: "POST" }); if(cur.id !== projectId || tab !== "bess") return; const rec = r.recommended;
+    $("#pane").innerHTML = `<div class="card"><p>Baseline net annual energy cost without battery: AUD ${r.baseline.annual_cost_aud.toLocaleString()}. Recommendation: <b>${rec ? `${rec.energy_kwh} kWh / ${rec.power_kw} kW, payback ${rec.payback_years} years` : "no economic payback at current tariffs"}</b></p>
+      <table><tr><th>Energy kWh</th><th>Power kW</th><th>Capex AUD</th><th>Annual saving AUD</th><th>Payback (years)</th><th>Curtailment kWh/day</th></tr>
+      ${r.options.map(o => `<tr${rec && o.energy_kwh === rec.energy_kwh ? ' style="background:#e9f7ec;font-weight:600"' : ""}><td>${o.energy_kwh}</td><td>${o.power_kw}</td><td>${o.capex_aud.toLocaleString()}</td><td>${o.annual_saving_aud.toLocaleString()}</td><td>${o.payback_years ?? "—"}</td><td>${o.curtail_kwh_day}</td></tr>`).join("")}</table></div>`;
+    const updated = await api(`/api/projects/${projectId}`); if(cur.id === projectId) cur = updated;
+  } catch (e) { if(cur.id === projectId && tab === "bess") $("#pane").innerHTML = `<div class="card error">${esc(e.message)}</div>`; }
+}
+function panePkg() {
+  const b = cur.blockers;
+  $("#pane").innerHTML = `<div class="card"><div class="row"><a href="/api/projects/${cur.id}/package?mode=draft"><button class="ghost">Download draft package</button></a>
+    <button ${b.length ? "disabled style='opacity:.5'" : ""} onclick="location.href='/api/projects/${cur.id}/package?mode=final'">Download final package</button>
+    <button class="ghost" onclick="act(()=>api('/api/projects/${cur.id}/submitted',{method:'POST'}))">Mark as submitted to DNSP</button></div>
+    <h2>Final package blockers (${b.length})</h2>${b.length ? `<ul>${b.map(x => `<li class="error">${esc(x)}</li>`).join("")}</ul>` : `<div class="ok">Ready for final package</div>`}</div>`;
+}
+function paneRfi() {
+  $("#pane").innerHTML = `<div class="card"><b>Log a DNSP request for information (RFI)</b><p class="muted">One item per line: request text | affected parameters (comma-separated)</p>
+    <textarea id="rfiText" placeholder="Provide central protection relay model and setting calculations | design.central_protection_relay"></textarea>
+    <div class="row" style="margin-top:6px"><button onclick="openRfi()">New RFI round</button></div></div>
+    ${cur.rfi_rounds.map(r => `<div class="card"><b>Round ${r.round_no}</b> <span class="muted">${esc(r.received_at)}${r.closed_at ? " · closed" : ""}</span>
+      <ul>${r.items.map((it, i) => `<li>${it.resolved ? "✓" : "☐"} ${esc(it.text)} <span class="src">${it.affected_params.map(esc).join(", ")}</span>
+      ${it.resolved ? ` — ${esc(it.response)}` : ` <button class="sm ghost" onclick="respondRfi(${r.round_no},${i})">Respond</button>`}</li>`).join("")}</ul></div>`).join("")}`;
+}
+function paneIntake() {
+  $("#pane").innerHTML = `<div class="card"><p class="muted">Paste additional information (emails, datasheet text, bill excerpts). Extracted values are marked unconfirmed and never overwrite manually entered or confirmed values.</p>
+    <textarea id="intakeText"></textarea><div class="row" style="margin-top:6px"><button onclick="doIntake()">Extract</button></div><div id="intakeOut"></div></div>`;
+}
+function parseVal(s) { try { return JSON.parse(s); } catch { return s; } }
+async function addParam() { const k = $("#nk").value.trim(); if (!k) return; await act(() => api(`/api/projects/${cur.id}/params/${k}`, { method: "PUT", body: JSON.stringify({ value: parseVal($("#nv").value), unit: $("#nu").value || null }) })); }
+async function editParam(k) { const v = prompt(`New value for ${k}`, JSON.stringify(cur.params[k].value)); if (v === null) return; await act(() => api(`/api/projects/${cur.id}/params/${k}`, { method: "PUT", body: JSON.stringify({ value: parseVal(v), unit: cur.params[k].unit }) })); }
+async function confirmParam(k) { const e = prompt("Confirming engineer name"); if (!e) return; await act(() => api(`/api/projects/${cur.id}/params/${k}/confirm`, { method: "POST", body: JSON.stringify({ engineer: e }) })); }
+async function confirmAll() { const e = $("#eng").value.trim(); if (!e) return toast("Please enter the engineer name");
+  await act(async()=>{for (const k of [...cur.assumptions]) cur = await api(`/api/projects/${cur.id}/params/${k}/confirm`, {method:'POST',body:JSON.stringify({engineer:e})}); return api(`/api/projects/${cur.id}`);});
+}
+async function signDocs() {
+  const scope = [...document.querySelectorAll(".sdoc:checked")].map(x => x.value);
+  await act(() => api(`/api/projects/${cur.id}/signoff`, { method: "POST", body: JSON.stringify({ reviewer_name: $("#sName").value, registration_type: $("#sType").value, registration_no: $("#sNo").value, scope }) }));
+}
+async function openRfi() {
+  const items = $("#rfiText").value.split("\n").filter(l => l.trim()).map(l => { const [t, ps] = l.split("|"); return { text: t.trim(), affected_params: (ps || "").split(",").map(s => s.trim()).filter(Boolean) }; });
+  const r = await act(() => api(`/api/projects/${cur.id}/rfi`, { method: "POST", body: JSON.stringify({ items }) }));
+  if (r) toast("Affected documents: " + (r.affected_documents.join(", ") || "none"));
+}
+async function respondRfi(n, i) { const t = prompt("Response"); if (!t) return; await act(() => api(`/api/projects/${cur.id}/rfi/${n}/respond`, { method: "POST", body: JSON.stringify({ item_index: i, response: t }) })); }
+async function doIntake() {
+  const r = await act(() => api(`/api/projects/${cur.id}/intake`, { method: "POST", body: JSON.stringify({ text: $("#intakeText").value, source_ref: "additional information" }) }));
+  if (r) toast(`Extracted ${r.extracted.length} field(s), wrote ${r.written.length}`);
+}
+loadList().catch(e => toast(e.message));
+</script>
+</body>
+</html>

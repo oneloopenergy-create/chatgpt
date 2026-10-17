@@ -1,0 +1,189 @@
+# Imported from GridEasy_DNSP_Evidence_Pack_v0.4.zip and GridEasy_Source_Links_and_Rules_v0.3.zip
+id: dnsp_evidence
+title: GridEasy DNSP Evidence Pack v0.4 + Source Links v0.3
+as_of: '2026-10-17'
+notes:
+- Source index and preliminary rules only, not a certified DNSP rule pack.
+- Links do not imply the PDF binary was downloaded; no PDFs are bundled.
+- 'STNW1175: web index shows 2026-08-18, opened PDF is Release 6 dated 2025-03-05
+  (effective 2025-02-23). Verify the controlled version.'
+- Online availability of network standards does not establish commercial reuse permission.
+  No AS/NZS full text is included.
+sources:
+- source_id: AUS-NS194
+  dnsp: Ausgrid
+  title: NS194 Inverter Energy Systems
+  version_or_date: '2026-09-10'
+  url: https://www.ausgrid.com.au/asp-and-contractors/technical-document-library/ns194
+  access_status: official_index_confirmed
+  notes: download latest PDF and compare 2023
+- source_id: AUS-EB
+  dnsp: Ausgrid
+  title: NSW Emergency Backstop
+  version_or_date: '2026'
+  url: https://www.ausgrid.com.au/connections/connections-news/nsw-emergency-backstop-mechanism
+  access_status: official_page_checked
+  notes: postcode staged implementation
+- source_id: END-PDIA
+  dnsp: Endeavour
+  title: PDI5000 am6 Part A
+  version_or_date: am6
+  url: https://www.endeavourenergy.com.au/media/Endeavour-Energy/ASP-Technical-Standards/Standards/PDI---PROTECTION-DESIGN-INSTRUCTION/PDI5000---Protection-of-Embedded-Generation/PDI-5000-am6---Protection-of-Embedded-Generation/PDI-5000-am6-Part-A---Protection-of-Embedded-Generation.pdf
+  access_status: pdf_readable_web
+  notes: 31 pages; clause extraction pending
+- source_id: END-PDIB
+  dnsp: Endeavour
+  title: PDI5000 am6 Part B
+  version_or_date: am6
+  url: https://www.endeavourenergy.com.au/media/Endeavour-Energy/ASP-Technical-Standards/Standards/PDI---PROTECTION-DESIGN-INSTRUCTION/PDI5000---Protection-of-Embedded-Generation/PDI-5000-am6---Protection-of-Embedded-Generation/PDI-5000-am6-Part-B---Protection-of-Embedded-Generation.pdf
+  access_status: pdf_readable_web
+  notes: 38 pages; clause extraction pending
+- source_id: ESS-INDEX
+  dnsp: Essential
+  title: HV connection documents index
+  version_or_date: current web
+  url: https://www.essentialenergy.com.au/our-network/connecting-to-the-network/hv-connections-documents
+  access_status: official_index_confirmed
+  notes: CEOP8079 CERM1135 CEOS7903 listed; controlled versions need check
+- source_id: ESS-HV
+  dnsp: Essential
+  title: HV process and time estimates
+  version_or_date: current web
+  url: https://www.essentialenergy.com.au/our-network/connecting-to-the-network/hv-connections-and-large-embedded-generators
+  access_status: official_page_checked
+  notes: 2-3 years overall indicative
+- source_id: ESS-SCADA
+  dnsp: Essential
+  title: HV emergency backstop SCADA
+  version_or_date: 2027-01-01 applicability
+  url: https://www.essentialenergy.com.au/our-network/connecting-to-the-network/Emergency-backstop-and-SCADA-requirements
+  access_status: official_page_checked
+  notes: applies to connection agreements signed from 2027-01-01
+- source_id: QLD-STNW1175
+  dnsp: Energex/Ergon
+  title: STNW1175 HV EG Connections
+  version_or_date: Release 6 2025-03-05; index updated 2026-08-18
+  url: https://www.energex.com.au/__data/assets/pdf_file/0020/1072550/Standard-for-High-Voltage-EG-Connections-STNW1175-2946177.pdf
+  access_status: pdf_readable_web
+  notes: 62 pages; index date differs from PDF release date
+- source_id: QLD-INDEX
+  dnsp: Energex/Ergon
+  title: Large customer standards and forms
+  version_or_date: '2026'
+  url: https://www.energex.com.au/our-services/connections/large-customer-connections/standards-manuals-and-fact-sheets
+  access_status: official_index_confirmed
+  notes: includes A2 checklist and RPEQ forms
+- source_id: ASNZS
+  dnsp: Standards Australia
+  title: AS/NZS 4777 3000 5139 etc
+  version_or_date: licensed
+  url: https://www.standards.org.au/
+  access_status: purchase_required
+  notes: commercial licence and permitted reuse require confirmation
+pdf_manifest:
+- filename: Ausgrid_NS194_Rev5_2026.pdf
+  official_url: https://aopt-p-001.sitecorecontenthub.cloud/api/public/content/306016dec6ab4fafb38be2dcd6b4e815?v=fac37e5f
+  status: not_downloaded
+- filename: Endeavour_PDI5000_PartA_am6.pdf
+  official_url: https://www.endeavourenergy.com.au/media/Endeavour-Energy/ASP-Technical-Standards/Standards/PDI---PROTECTION-DESIGN-INSTRUCTION/PDI5000---Protection-of-Embedded-Generation/PDI-5000-am6---Protection-of-Embedded-Generation/PDI-5000-am6-Part-A---Protection-of-Embedded-Generation.pdf
+  status: not_downloaded
+- filename: Endeavour_PDI5000_PartB_am6.pdf
+  official_url: https://www.endeavourenergy.com.au/media/Endeavour-Energy/ASP-Technical-Standards/Standards/PDI---PROTECTION-DESIGN-INSTRUCTION/PDI5000---Protection-of-Embedded-Generation/PDI-5000-am6---Protection-of-Embedded-Generation/PDI-5000-am6-Part-B---Protection-of-Embedded-Generation.pdf
+  status: not_downloaded
+- filename: Essential_CERM1135.pdf
+  official_url: https://www.essentialenergy.com.au/-/media/Project/EssentialEnergy/Website/Files/Our-Network/CERM1135.pdf
+  status: not_downloaded
+- filename: Energex_Ergon_STNW1175_R6.pdf
+  official_url: https://www.energex.com.au/__data/assets/pdf_file/0020/1072550/STNW1175-Standard-for-HV-EG-Connections.pdf
+  status: not_downloaded
+- filename: Energex_Ergon_STNW1174.pdf
+  official_url: https://www.energex.com.au/__data/assets/pdf_file/0005/1072553/Standard-for-Low-Voltage-EG-Connections-3055320.pdf
+  status: not_downloaded
+field_vocabulary:
+- field_key: nmi
+  maps_to: site.nmi
+  required_by_default: false
+- field_key: connection_point
+  maps_to: site.connection_point
+  required_by_default: false
+- field_key: voltage_kv
+  maps_to: calc.connection_voltage_kv
+  required_by_default: false
+- field_key: phase_count
+  maps_to: connection.phase_count
+  required_by_default: false
+- field_key: technology
+  maps_to: design.topology
+  required_by_default: false
+- field_key: ies_total_kva
+  maps_to: calc.inverter_ac_kva
+  required_by_default: false
+- field_key: pv_dc_kw
+  maps_to: pv.dc_kwp
+  required_by_default: false
+- field_key: battery_power_kw
+  maps_to: calc.bess_pcs_kva
+  required_by_default: false
+- field_key: battery_energy_kwh
+  maps_to: calc.bess_energy_kwh
+  required_by_default: false
+- field_key: export_limit_kw
+  maps_to: export.requested_kw
+  required_by_default: false
+- field_key: export_control_method
+  maps_to: export.scheme
+  required_by_default: false
+- field_key: connection_agreement_date
+  maps_to: project.connection_agreement_date
+  required_by_default: false
+- field_key: commissioning_date
+  maps_to: project.commissioning_date
+  required_by_default: false
+- field_key: postcode
+  maps_to: site.postcode
+  required_by_default: false
+- field_key: class_a1_a2_b
+  maps_to: connection.eg_class
+  required_by_default: false
+- field_key: scr
+  maps_to: connection.scr
+  required_by_default: false
+- field_key: grid_model_available
+  maps_to: design.grid_model_available
+  required_by_default: false
+- field_key: pscad_model_available
+  maps_to: design.pscad_model_available
+  required_by_default: false
+- field_key: rpeq_name
+  maps_to: signoff.rpeq_name
+  required_by_default: false
+- field_key: rpeq_registration
+  maps_to: signoff.rpeq_registration
+  required_by_default: false
+- field_key: sld_file
+  maps_to: doc:sld
+  required_by_default: false
+- field_key: metering_scheme
+  maps_to: design.metering_scheme
+  required_by_default: false
+- field_key: inverter_make_model
+  maps_to: equipment.pv_inverters
+  required_by_default: false
+- field_key: pcs_make_model
+  maps_to: equipment.bess
+  required_by_default: false
+- field_key: battery_make_model
+  maps_to: equipment.bess
+  required_by_default: false
+- field_key: protection_design
+  maps_to: design.central_protection_relay
+  required_by_default: false
+- field_key: scada_rtu
+  maps_to: design.scada_rtu
+  required_by_default: false
+- field_key: cyber_security_assessment
+  maps_to: design.cyber_security_assessment
+  required_by_default: false
+- field_key: application_type
+  maps_to: project.application_type
+  required_by_default: false

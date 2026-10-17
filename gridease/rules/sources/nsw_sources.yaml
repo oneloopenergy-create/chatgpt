@@ -1,0 +1,181 @@
+# Imported from GridEasy_NSW_Data_Master_v0.1.xlsx (Sources sheet)
+id: nsw_sources
+title: GridEasy NSW Data Master — source registry
+version: '0.1'
+as_of: '2026-10-17'
+note: '''Verified source'' means the official webpage/PDF was identified; it does
+  NOT mean engineering clauses have been audited.'
+sources:
+- id: SRC001
+  publisher: AEMO
+  document_dataset: Sub 5 MW DER technical requirements
+  type: Guideline
+  jurisdiction: National
+  scope: DER <5MW
+  publication_date: '2025-11-25'
+  verification_status: Verified source; advisory
+  official_url: https://www.aemo.com.au/initiatives/major-programs/nem-distributed-energy-resources-der-program/standards-and-connections/technical-requirements-for-sub-5-mw-der-connections
+  access: Public
+  priority: High
+  next_action: Read clauses and map DNSP adoption
+- id: SRC002
+  publisher: AEMO
+  document_dataset: Sub 5 MW DER DNSP guideline PDF
+  type: Technical PDF
+  jurisdiction: National
+  scope: DER <5MW
+  publication_date: '2025-11-25'
+  verification_status: Verified source; not mandatory
+  official_url: https://www.aemo.com.au/-/media/files/initiatives/engineering-framework/2025/Technical-Requirements-for-sub-5-MW-DER-Connections-DNSP-Guideline
+  access: Public
+  priority: High
+  next_action: Extract requirement tables and scope
+- id: SRC003
+  publisher: Ausgrid
+  document_dataset: Connecting solar and embedded generation
+  type: Connection guidance
+  jurisdiction: NSW / Ausgrid
+  scope: Solar+BESS <5MVA
+  verification_status: Verified official page
+  official_url: https://sc-cd.ausgrid.com.au/Connections/Solar-and-batteries/Connecting-solar-or-small-generation
+  access: Public
+  priority: High
+  next_action: Capture connection categories and required data
+- id: SRC004
+  publisher: Ausgrid
+  document_dataset: Large registered and non-registered embedded generators
+  type: Connection process
+  jurisdiction: NSW / Ausgrid
+  scope: 200kW–5MW nonregistered
+  verification_status: Verified official page
+  official_url: https://www.ausgrid.com.au/connections/apply-for-a-connection/solar-batteries-and-embedded-generation/connecting-large-embedded-generators
+  access: Public
+  priority: High
+  next_action: Download linked application process and protection examples
+- id: SRC005
+  publisher: Ausgrid
+  document_dataset: Information for solar installers
+  type: Technical guidance
+  jurisdiction: NSW / Ausgrid
+  scope: Inverter systems
+  verification_status: Verified official page
+  official_url: https://sc-cd.ausgrid.com.au/Connections/Solar-and-batteries/Information-for-solar-installers
+  access: Public
+  priority: High
+  next_action: Acquire NS194 current revision
+- id: SRC006
+  publisher: Ausgrid
+  document_dataset: Connecting solar and batteries
+  type: Connection guidance
+  jurisdiction: NSW / Ausgrid
+  scope: All new/modified solar
+  verification_status: Verified official page
+  official_url: https://www.ausgrid.com.au/connections/connection-application-help/solar-support/connecting-solar-or-small-generation
+  access: Public
+  priority: High
+  next_action: Track NSW emergency backstop changes
+- id: SRC007
+  publisher: Endeavour Energy
+  document_dataset: Model standing offer Schedule 3 10kW–5MW
+  type: Connection terms PDF
+  jurisdiction: NSW / Endeavour
+  scope: 10kW–5MW
+  publication_date: 2023-11
+  verification_status: Verified PDF; currency to check
+  official_url: https://www.endeavourenergy.com.au/__data/assets/pdf_file/0031/86890/Endeavour-Energy-Standard-Connection-MSO-November-2023-REBRANDED.pdf
+  access: Public
+  priority: High
+  next_action: Locate current process and technical standards
+- id: SRC008
+  publisher: Essential Energy
+  document_dataset: HV connection documents
+  type: Technical document index
+  jurisdiction: NSW / Essential
+  scope: HV embedded generation
+  verification_status: Verified official index
+  official_url: https://www.essentialenergy.com.au/our-network/connecting-to-the-network/hv-connections-documents
+  access: Public
+  priority: High
+  next_action: Download CEOP8079 CERM1135 CEOS7903 CEOP8012
+- id: SRC009
+  publisher: AEMO
+  document_dataset: Compliance of DER with technical settings
+  type: Standards guidance
+  jurisdiction: National
+  scope: Inverter DER
+  verification_status: Verified official page
+  official_url: https://www.aemo.com.au/initiatives/major-programs/nem-distributed-energy-resources-der-program/standards-and-connections/compliance-of-der-with-technical-settings
+  access: Public
+  priority: Medium
+  next_action: Map AS/NZS4777.2 scope
+- id: SRC010
+  publisher: Australian Government
+  document_dataset: Inverters guidance / CEC approved list pointer
+  type: Equipment source
+  jurisdiction: National
+  scope: Inverters
+  verification_status: Verified official page
+  official_url: https://www.energy.gov.au/solar/get-know-solar-technology/inverters
+  access: Public
+  priority: Medium
+  next_action: Locate CEC approved model list and reuse terms
+- id: SRC011
+  publisher: Standards Australia
+  document_dataset: AS/NZS 4777.1 and 4777.2
+  type: Licensed standards
+  jurisdiction: National
+  scope: Inverter installation and performance
+  verification_status: Catalogue reference; content not obtained
+  access: Licensed
+  priority: High
+  next_action: Obtain lawful standard access and editions
+- id: SRC012
+  publisher: Standards Australia
+  document_dataset: AS/NZS 3000, 5033, 5139
+  type: Licensed standards
+  jurisdiction: National
+  scope: Wiring, PV, battery safety
+  verification_status: Catalogue reference; content not obtained
+  access: Licensed
+  priority: High
+  next_action: Obtain lawful access; validate current editions
+- id: SRC013
+  publisher: AEMC / AER
+  document_dataset: NER Chapter 5A and relevant schedules
+  type: Regulatory rules
+  jurisdiction: NEM
+  scope: Embedded generation
+  verification_status: Not yet retrieved
+  access: Public
+  priority: High
+  next_action: Retrieve current consolidated rules and effective dates
+- id: SRC014
+  publisher: NSW Government
+  document_dataset: Service and Installation Rules / CER emergency backstop
+  type: State rules
+  jurisdiction: NSW
+  scope: Solar+BESS
+  verification_status: Not yet retrieved
+  access: Public
+  priority: High
+  next_action: Retrieve latest rules and transition dates
+- id: SRC015
+  publisher: CEC / OEMs
+  document_dataset: Approved inverters and batteries / manufacturer specifications
+  type: Equipment registry
+  jurisdiction: National
+  scope: PV+BESS
+  verification_status: Not yet retrieved
+  access: Mixed
+  priority: Medium
+  next_action: Check product list rights, model firmware and certificates
+- id: SRC016
+  publisher: Client EPC / engineers
+  document_dataset: Historical project applications and DNSP correspondence
+  type: Benchmark project data
+  jurisdiction: NSW
+  scope: C&I solar+BESS
+  verification_status: Not acquired
+  access: Confidential
+  priority: High
+  next_action: Obtain consent, NDA, de-identification and baseline outputs

@@ -1,0 +1,11 @@
+# ENA National DER Connection Guidelines — category thresholds
+id: ena_der
+title: ENA National DER Connection Guidelines (Basic micro EG / LV / MV-HV)
+version: "2026-draft"
+verified: false
+source: "Energy Networks Australia — National DER Connection Guidelines (small IES 3rd edition 2026)"
+categories:
+  small_max_kva: 30          # small: 30 kVA and below (out of MVP scope)
+  mv_nem_max_kva: 5000       # MV/HV guideline covers non-registered units up to 5 MVA in the NEM
+  mv_wem_max_kva: 10000
+aemo_registration_exemption_kw: 5000   # below 5 MW usually exempt from registration (per AEMO exemption guide)

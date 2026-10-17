@@ -1,0 +1,376 @@
+# Ausgrid rule pack v0.2 — RESEARCH SEEDS, NOT APPROVED FOR ENGINEERING USE.
+# Imported from GridEasy_Ausgrid_Rule_Pack_v0.2.xlsx, GridEasy_NSW_Data_Master_v0.1.xlsx,
+# GridEasy_Source_Links_and_Rules_v0.3 and GridEasy_DNSP_Evidence_Pack_v0.4 (2026-10-17).
+# The NER pathway uses generation kW and registration status; the protection trigger uses aggregate
+# inverter kVA. Do not conflate them. An engineer must validate the rules and boundary conditions
+# before production use.
+id: dnsp_ausgrid
+title: Ausgrid connection rules (C&I PV + BESS, 200 kVA – 5 MVA focus)
+dnsp: Ausgrid
+state: NSW
+version: "0.3"
+verified: false
+approval: research_seed
+as_of: "2026-10-17"
+source: "Official Ausgrid public pages; selected NS194 clauses checked; complete guideline not yet parsed"
+
+sources:
+  A01: {document: "Large embedded generator connection pathway", authority: Ausgrid, scope: "Non-registered 200kW–5MW", status: "Official page checked",
+        url: "https://www.ausgrid.com.au/connections/apply-for-a-connection/solar-batteries-and-embedded-generation/connecting-large-embedded-generators"}
+  A02: {document: "Non-Registered Embedded Generators Guideline", authority: Ausgrid, scope: "NER 5A process", status: "Document identified; detailed clauses pending",
+        url: "https://www.ausgrid.com.au/-/media/Documents/Connections/Embedded-Gen/Non-Registered-Embedded-Generators-Guideline.pdf?rev=d64afcced3c5456694c3cf2c4dbc9c6c"}
+  A03: {document: "NS194 Embedded Generation", authority: Ausgrid, scope: "Protection and IES technical requirements", status: "Selected clauses checked",
+        url: "https://www.ausgrid.com.au/-/media/Documents/Technical-Documentation/NS/NS194?rev=b2bbcfda4b364c9786bc8a840794c84d"}
+  A04: {document: "Connection application guidance", authority: Ausgrid, scope: "General application prerequisites", status: "Official page checked",
+        url: "https://www.ausgrid.com.au/connections/apply-for-a-connection"}
+  A05: {document: "NS195 HV Customer Connections", authority: Ausgrid, scope: "HV projects", status: "Index checked; details pending",
+        url: "https://www.ausgrid.com.au/asp-and-contractors/technical-document-library/ns195"}
+  A06: {document: "ES1 Premises Connection Requirements", authority: Ausgrid, scope: "Premises connections", status: "Index checked",
+        url: "https://www.ausgrid.com.au/asp-and-contractors/technical-document-library/es1"}
+  A07: {document: "DER Register", authority: Ausgrid, scope: "Registration and commissioning", status: "Official page checked",
+        url: "https://www.ausgrid.com.au/connections/connection-application-help/solar-support/distributed-energy-resources-register"}
+  A08: {document: "Solar and batteries guidance", authority: Ausgrid, scope: "Solar/BESS workflow", status: "Official page checked",
+        url: "https://www.ausgrid.com.au/connections/connection-application-help/solar-support/connecting-solar-or-small-generation"}
+  A09: {document: "Technology providers CSIP-AUS", authority: Ausgrid, scope: "Late-2026 policy changes", status: "Official page checked",
+        url: "https://www.ausgrid.com.au/connections/connection-application-help/solar-support/information-for-technology-providers"}
+  AUS-NS194: {document: "NS194 Inverter Energy Systems — document library index (Rev5, 2026-09-10)", authority: Ausgrid, scope: "IES", status: "Official index confirmed; full Rev5 clause-by-clause and 2023 diff pending",
+              url: "https://www.ausgrid.com.au/asp-and-contractors/technical-document-library/ns194"}
+  AUS-NS194-R5: {document: "NS194 Rev5 PDF (2026)", authority: Ausgrid, scope: "IES", status: "Link identified; binary not downloaded",
+                 url: "https://aopt-p-001.sitecorecontenthub.cloud/api/public/content/306016dec6ab4fafb38be2dcd6b4e815?v=fac37e5f"}
+  AUS-EB: {document: "NSW Emergency Backstop Mechanism", authority: Ausgrid, scope: "New/upgraded solar; postcode-staged", status: "Official page checked",
+           url: "https://www.ausgrid.com.au/connections/connections-news/nsw-emergency-backstop-mechanism"}
+  SRC002: {document: "Technical Requirements for sub-5 MW DER Connections — DNSP Guideline (2025-11-25)", authority: AEMO, scope: "DER <5MW", status: "Verified source; advisory, not mandatory",
+           url: "https://www.aemo.com.au/-/media/files/initiatives/engineering-framework/2025/Technical-Requirements-for-sub-5-MW-DER-Connections-DNSP-Guideline"}
+  SRC003: {document: "Connecting solar and embedded generation", authority: Ausgrid, scope: "Solar+BESS <5MVA", status: "Verified official page",
+           url: "https://sc-cd.ausgrid.com.au/Connections/Solar-and-batteries/Connecting-solar-or-small-generation"}
+  SRC005: {document: "Information for solar installers", authority: Ausgrid, scope: "Inverter systems", status: "Verified official page",
+           url: "https://sc-cd.ausgrid.com.au/Connections/Solar-and-batteries/Information-for-solar-installers"}
+
+# Rule conditions use the engine field vocabulary (see gridease/rules/engine.py FIELD_MAP).
+# when: {all: [...]} / {any: [...]}; leaf: {field, op, value}. ops: eq ne in not_in gt gte lt lte present missing
+# severity: error = blocks final package until resolved; warning = engineering review; info = record/reminder.
+rules:
+  - id: AG-R001
+    trigger: "DNSP=Ausgrid; non-registered EG; 200kW <= generation < 5MW"
+    when: {all: [{field: generation_kw, op: gte, value: 200}, {field: generation_kw, op: lt, value: 5000},
+                 {field: aemo_registration_status, op: eq, value: exempt}]}
+    outcome: "Route to NER Chapter 5A process; verify registration status"
+    source: A01
+    clause: "Connection pathway"
+    confidence: "Official summary"
+    action: route_to_nonregistered
+    flag: nonregistered_path
+    engineering_review: "Yes: classification exceptions"
+    severity: warning
+  - id: AG-R002
+    trigger: "aggregate inverter capacity >200 kVA at one supply point"
+    when: {field: aggregate_inverter_kva, op: gt, value: 200}
+    outcome: "Interface protection required unless NS194 §5.5 exemption applies"
+    source: A03
+    clause: "5.4.2"
+    confidence: "Clause checked"
+    action: flag_interface_protection
+    flag: interface_protection_required
+    engineering_review: "Yes"
+    severity: warning
+    notes: "Clause number from an earlier NS194 revision; re-check against NS194 Rev5 (2026-09-10)"
+  - id: AG-R003
+    trigger: "interface protection required; capacity >200kVA"
+    when: {field: aggregate_inverter_kva, op: gt, value: 200}
+    outcome: "Review protection settings and measurements against NS194"
+    source: A03
+    clause: "5.4.3–5.4.6"
+    confidence: "Clause checked"
+    action: require_protection_design
+    flag: protection_design_required
+    engineering_review: "Yes"
+    severity: warning
+    notes: "Clause number from an earlier NS194 revision; re-check against NS194 Rev5 (2026-09-10)"
+  - id: AG-R004
+    trigger: "all Ausgrid EG connection applications"
+    when: {all: []}
+    outcome: "Record existing embedded generation at premises"
+    source: A04
+    clause: "Before you start"
+    confidence: "Official summary"
+    action: require_existing_eg
+    engineering_review: "No for completeness; Yes for engineering"
+    severity: info
+  - id: AG-R005
+    trigger: "all applications"
+    when: {all: []}
+    outcome: "Collect property address, applicant/customer and technical connection details"
+    source: A04
+    clause: "Before you start"
+    confidence: "Official summary"
+    action: require_intake_fields
+    engineering_review: "No"
+    severity: info
+  - id: AG-R006
+    trigger: "IES"
+    when: {field: aggregate_inverter_kva, op: gt, value: 0}
+    outcome: "Inverter power-quality settings align with AS/NZS 4777.2 and Australia A regional setting"
+    source: A03
+    clause: "5.2.1–5.2.2"
+    confidence: "Clause checked"
+    action: check_settings_evidence
+    engineering_review: "Yes"
+    severity: warning
+    notes: "Clause number from an earlier NS194 revision; re-check against NS194 Rev5 (2026-09-10)"
+  - id: AG-R007
+    trigger: "HV customer connection"
+    when: {field: connection_phase, op: eq, value: HV}
+    outcome: "Review NS195 requirements"
+    source: A05
+    clause: "Scope"
+    confidence: "Official summary"
+    action: require_hv_review
+    flag: hv_review
+    engineering_review: "Yes"
+    severity: warning
+  - id: AG-R008
+    trigger: "solar/battery application"
+    when: {any: [{field: pv_dc_kwp, op: gt, value: 0}, {field: bess_energy_kwh, op: gt, value: 0}]}
+    outcome: "Record DER equipment for registration workflow; verify current post-commissioning deadline"
+    source: A07
+    clause: "DER Register"
+    confidence: "Official summary"
+    action: require_der_record
+    engineering_review: "Yes: date applicability"
+    severity: info
+  - id: AG-R009
+    trigger: "new/upgraded solar from late 2026"
+    when: {field: pv_dc_kwp, op: gt, value: 0}
+    outcome: "Check NSW Emergency Backstop applicability and phase-in dates"
+    source: "A08;A09"
+    clause: "Policy guidance"
+    confidence: "Official summary; implementation pending"
+    action: flag_backstop_review
+    flag: backstop_review
+    engineering_review: "Yes"
+    severity: warning
+  - id: AG-R010
+    trigger: "project capacity entered as kW only"
+    when: {any: [{field: aggregate_inverter_kva, op: missing}, {field: generation_kw, op: missing},
+                 {field: export_limit_kw, op: missing}]}
+    outcome: "Request aggregate inverter kVA, generation kW, export kW and battery charge/discharge separately"
+    source: "A01;A03"
+    clause: "Cross-source modelling inference"
+    confidence: "Design recommendation"
+    action: require_distinct_capacity_fields
+    flag: distinct_capacity_fields_required
+    engineering_review: "Yes"
+    severity: error
+  # From GridEasy_NSW_Data_Master_v0.1 Rule_Seeds
+  - id: AG-R011
+    trigger: "Three-phase >30kVA to 200kVA (NSW Data Master R004)"
+    when: {all: [{field: aggregate_inverter_kva, op: gt, value: 30}, {field: aggregate_inverter_kva, op: lte, value: 200}]}
+    outcome: "Page describes 30kW export limit option or paid assessment for higher export; verify site-specific offer"
+    source: SRC003
+    clause: "Official page summary"
+    confidence: "Verified summary"
+    action: check_export_offer
+    flag: export_offer_review
+    engineering_review: "Human review"
+    severity: warning
+  - id: AG-R012
+    trigger: "Applicable inverter installation (NSW Data Master R006)"
+    when: {field: aggregate_inverter_kva, op: gt, value: 0}
+    outcome: "Check AS/NZS 4777.1/.2 and NS194; CEC approval or Ausgrid written approval"
+    source: SRC005
+    clause: "Official page summary"
+    confidence: "Verified summary"
+    action: check_equipment_conformity
+    engineering_review: "Human review"
+    severity: info
+  - id: AG-R013
+    trigger: "Nameplate <5MW (NSW Data Master R005)"
+    when: {field: generation_kw, op: lt, value: 5000}
+    outcome: "AEMO sub-5 MW DER guideline is recommended, not mandatory; check how Ausgrid has adopted it"
+    source: SRC002
+    clause: "Section 1.2"
+    confidence: "Verified advisory scope"
+    action: note_aemo_advisory
+    engineering_review: "Human review"
+    severity: info
+  # From GridEasy_Source_Links_and_Rules_v0.3 (NS194 Rev5) and DNSP_Evidence_Pack_v0.4 (Emergency Backstop)
+  - id: AG-001
+    trigger: "All IES (NS194 Rev5 1.1.4)"
+    when: {field: aggregate_inverter_kva, op: gt, value: 0}
+    outcome: "Check inverter portal listing or Ausgrid written approval"
+    source: AUS-NS194
+    clause: "NS194 Rev5 1.1.4"
+    confidence: "Verified source"
+    action: check_inverter_approval
+    engineering_review: "Review"
+    severity: info
+  - id: AG-002
+    trigger: "PV IES <= 200 kVA (NS194 Rev5 1.3.1)"
+    when: {all: [{field: pv_dc_kwp, op: gt, value: 0}, {field: aggregate_inverter_kva, op: lte, value: 200}]}
+    outcome: "Emergency backstop requirement is future-dated (2026-11-23); assess applicability"
+    source: AUS-NS194
+    clause: "NS194 Rev5 1.3.1"
+    confidence: "Verified source"
+    action: assess_backstop_applicability
+    flag: backstop_review
+    engineering_review: "Review"
+    severity: warning
+    effective_from: "2026-11-23"
+  - id: AUS-EB-001
+    trigger: "New or upgraded solar <= 200 kW, installed from 2026-11-23 (or date unknown)"
+    when: {all: [{field: pv_dc_kwp, op: gt, value: 0}, {any: [{field: generation_kw, op: lte, value: 200},
+                       {all: [{field: generation_kw, op: missing}, {field: aggregate_inverter_kva, op: lte, value: 200}]}]},
+                 {any: [{field: commissioning_date, op: missing}, {field: commissioning_date, op: gte, value: "2026-11-23"}]}]}
+    outcome: "Register the installation in the CER installer portal"
+    source: AUS-EB
+    clause: "Official page"
+    confidence: "Official page checked"
+    action: require_cer_portal_registration
+    flag: backstop_registration_required
+    engineering_review: "Yes: postcode and exemptions"
+    severity: warning
+    effective_from: "2026-11-23"
+    notes: "Handle postcodes and exemptions; registration is distinct from backstop capability"
+  - id: AUS-EB-002
+    trigger: "New or upgraded solar <= 200 kW in a phased postcode, installed from 2026-11-30 (or date unknown)"
+    when: {all: [{field: pv_dc_kwp, op: gt, value: 0}, {any: [{field: generation_kw, op: lte, value: 200},
+                       {all: [{field: generation_kw, op: missing}, {field: aggregate_inverter_kva, op: lte, value: 200}]}]},
+                 {any: [{field: commissioning_date, op: missing}, {field: commissioning_date, op: gte, value: "2026-11-30"}]}]}
+    outcome: "Backstop capability test at installation if the site postcode is in a phased stage"
+    source: AUS-EB
+    clause: "Official page"
+    confidence: "Official page checked"
+    action: check_postcode_phase
+    flag: postcode_check_required
+    engineering_review: "Yes: postcode checker not yet built"
+    severity: warning
+    effective_from: "2026-11-30"
+    notes: "Postcode stage list not yet captured; check the postcode on the Ausgrid page"
+  - id: AUS-EB-003
+    trigger: "New or upgraded solar <= 200 kW, installed from 2027-02-22 (or date unknown)"
+    when: {all: [{field: pv_dc_kwp, op: gt, value: 0}, {any: [{field: generation_kw, op: lte, value: 200},
+                       {all: [{field: generation_kw, op: missing}, {field: aggregate_inverter_kva, op: lte, value: 200}]}]},
+                 {any: [{field: commissioning_date, op: missing}, {field: commissioning_date, op: gte, value: "2027-02-22"}]}]}
+    outcome: "System must be backstop-enabled and registered (all applicable postcodes)"
+    source: AUS-EB
+    clause: "Official page"
+    confidence: "Official page checked"
+    action: require_backstop_enabled
+    flag: backstop_enabled_required
+    engineering_review: "Yes: exemptions need separate logic"
+    severity: warning
+    effective_from: "2027-02-22"
+  - id: AUS-EB-004
+    trigger: "Approved before 2026-11-23 and not commissioned by 2027-05-22"
+    when: {all: [{field: pv_dc_kwp, op: gt, value: 0}, {field: dnsp_approval_date, op: lt, value: "2026-11-23"},
+                 {any: [{field: commissioning_date, op: missing}, {field: commissioning_date, op: gte, value: "2027-05-22"}]}]}
+    outcome: "Reapply and meet backstop requirements"
+    source: AUS-EB
+    clause: "Official page"
+    confidence: "Official page checked"
+    action: require_reapplication
+    flag: backstop_reapply_required
+    engineering_review: "Yes: time-dependent"
+    severity: warning
+    effective_from: "2027-05-22"
+  # GridEasy-derived review flags (from workbook test cases and ausgrid_rule_engine_seed.py)
+  - id: GE-F001
+    trigger: "AEMO registration status not confirmed"
+    when: {any: [{field: aemo_registration_status, op: missing}, {field: aemo_registration_status, op: in, value: [unknown, pending]}]}
+    outcome: "Do not assume registration status; confirm registered / exempt before choosing the pathway"
+    source: A01
+    clause: "Connection pathway"
+    confidence: "Design recommendation"
+    action: review_registration_status
+    flag: registration_status_review
+    engineering_review: "Yes"
+    severity: warning
+  - id: GE-F002
+    trigger: "kW and kVA fall on different sides of the 200 or 5000 boundary"
+    when: {any: [
+      {all: [{field: generation_kw, op: lt, value: 5000}, {field: aggregate_inverter_kva, op: gte, value: 5000}]},
+      {all: [{field: generation_kw, op: gte, value: 5000}, {field: aggregate_inverter_kva, op: lt, value: 5000}]},
+      {all: [{field: generation_kw, op: lt, value: 200}, {field: aggregate_inverter_kva, op: gt, value: 200}]},
+      {all: [{field: generation_kw, op: gte, value: 200}, {field: aggregate_inverter_kva, op: lte, value: 200}]}]}
+    outcome: "Pathway (kW) and protection (kVA) classifications disagree; verify exact boundaries per connection category"
+    source: "A01;A02;A03"
+    clause: "Backlog P0: boundary test matrix"
+    confidence: "Design recommendation"
+    action: review_capacity_boundary
+    flag: capacity_boundary_review
+    engineering_review: "Yes"
+    severity: warning
+  - id: GE-F003
+    trigger: "Existing embedded generation declared"
+    when: {field: existing_eg_present, op: eq, value: true}
+    outcome: "Capture existing EG details (kVA, inverter models, export arrangement) and assess aggregation"
+    source: A04
+    clause: "Before you start"
+    confidence: "Official summary"
+    action: require_existing_eg_details
+    flag: existing_eg_details_required
+    engineering_review: "Yes"
+    severity: warning
+  - id: GE-F004
+    trigger: "Existing embedded generation not declared"
+    when: {field: existing_eg_present, op: missing}
+    outcome: "Ausgrid requires existing EG at the premises to be recorded; declare yes/no"
+    source: A04
+    clause: "Before you start"
+    confidence: "Official summary"
+    action: require_existing_eg_declaration
+    flag: missing_existing_eg_declaration
+    engineering_review: "No"
+    severity: error
+
+# Values used by the calculation layer. null = not yet sourced; the engine reports it as unknown.
+inverter_region: australia_a          # AG-R006, NS194 5.2.1–5.2.2
+inverter_region_source: "AG-R006 · NS194 §5.2.1–5.2.2"
+connection:
+  lv_max_kva: null
+  mv_voltages_v: [11000, 22000]
+export:
+  default_static_limit_kw: 30         # AG-R011: 30 kW option for three-phase >30–200 kVA
+  zero_export_option: null
+  dynamic_supported: null
+  export_control_response_s: null
+  max_negotiated_without_study_kw: 30 # above this a paid assessment applies (AG-R011)
+  static_option_max_kva: 200          # AG-R011 applies to >30–200 kVA; above 200 kVA large EG assessment (AG-R002/R001)
+central_protection:
+  name: "Interface protection (NS194)"
+  required_above_kva: 200             # AG-R002, NS194 §5.4.2 (unless §5.5 exemption applies)
+  required_above_kva_source: "AG-R002 · NS194 §5.4.2"
+  nvd_required_on_mv: null
+  settings:   # functions per NS194 §5.4.3–5.4.6; values not yet extracted
+    - {function: "Overvoltage", ansi: "59", setting: "TBC per NS194 §5.4.3–5.4.6", trip_time_s: null}
+    - {function: "Undervoltage", ansi: "27", setting: "TBC per NS194 §5.4.3–5.4.6", trip_time_s: null}
+    - {function: "Overfrequency", ansi: "81O", setting: "TBC per NS194 §5.4.3–5.4.6", trip_time_s: null}
+    - {function: "Underfrequency", ansi: "81U", setting: "TBC per NS194 §5.4.3–5.4.6", trip_time_s: null}
+    - {function: "Neutral voltage displacement (HV only)", ansi: "59N", setting: "TBC per NS194 / NS195", trip_time_s: null, mv_only: true}
+application_form:
+  template: "Ausgrid embedded generation connection application (current form to be obtained — backlog P0)"
+  fields:
+    - {field: "Applicant / customer name", param: site.customer}
+    - {field: "Applicant ABN", param: site.applicant_abn}
+    - {field: "Site address", param: site.address}
+    - {field: "NMI", param: site.nmi}
+    - {field: "Connection voltage (V)", param: connection.supply_voltage_v}
+    - {field: "Connection phase (LV/HV)", param: calc.connection_phase}
+    - {field: "Existing maximum demand (kVA)", param: connection.max_demand_kva}
+    - {field: "Existing embedded generation present", param: site.existing_eg_present}
+    - {field: "Existing embedded generation (kVA)", param: site.existing_eg_kva}
+    - {field: "AEMO registration status", param: registration.aemo_status}
+    - {field: "PV DC capacity (kWp)", param: pv.dc_kwp}
+    - {field: "PV inverter AC capacity (kVA)", param: calc.pv_inverter_ac_kva}
+    - {field: "Aggregate inverter capacity (kVA)", param: calc.inverter_ac_kva}
+    - {field: "Maximum generation (kW)", param: generation.max_kw}
+    - {field: "Battery energy (kWh)", param: calc.bess_energy_kwh}
+    - {field: "Battery PCS (kVA)", param: calc.bess_pcs_kva}
+    - {field: "Battery max charge (kW)", param: bess.charge_kw}
+    - {field: "Battery max discharge (kW)", param: bess.discharge_kw}
+    - {field: "Requested export limit (kW)", param: export.requested_kw}
+    - {field: "Maximum import (kW)", param: connection.max_import_kw}
+    - {field: "Export control method", param: export.scheme}
+    - {field: "Inverter region setting", param: inverter.region}
+    - {field: "Licensed electrical contractor number", param: contractor.licence_no}
+package_order: [application_form, sld, protection_settings, equipment_list, export_scheme, site_plan]
