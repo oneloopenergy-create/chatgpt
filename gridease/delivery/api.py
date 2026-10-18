@@ -44,7 +44,16 @@ def register(app,load,store,summary,refresh_design):
     def schema():
         from typing import get_args
         from .standards import CATALOG
-        return {'design':Design.model_json_schema(),'evidence_kinds':list(get_args(EVIDENCE_KINDS)),'standards':CATALOG}
+        from ..sld.references import reference_catalog
+        return {'design':Design.model_json_schema(),'evidence_kinds':list(get_args(EVIDENCE_KINDS)),'standards':CATALOG,'sld_references':reference_catalog()}
+
+    @router.get('/api/projects/{pid}/delivery/sld-print')
+    def sld_print(p:Project=Depends(load)):
+        enabled(p)
+        doc=p.documents.get('sld')
+        if doc is None:raise HTTPException(404,'SLD has not been generated')
+        from ..sld.engineering import printable_sld
+        return Response(printable_sld(doc.content),media_type='text/html')
 
     @router.post('/api/delivery/validate')
     def validate_import(body:Design):

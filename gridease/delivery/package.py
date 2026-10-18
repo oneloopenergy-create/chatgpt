@@ -34,6 +34,13 @@ def build(p,store,scope,mode,actor):
         path='drawings-and-design/'+prefix+doc.filename
         files[path]=doc.content.encode()
         manifest['documents'].append({'id':name,'path':path,'sha256':doc.sha256,'signed':p.is_signed(name),'inputs':doc.inputs,'todo':doc.todo})
+    if 'sld' in names and 'sld' in p.documents:
+        from ..sld.engineering import printable_sld
+        source=p.documents['sld']
+        path='drawings-and-design/'+prefix+'01_sld_A3_print.html'
+        content=printable_sld(source.content).encode()
+        files[path]=content
+        manifest['documents'].append({'id':'sld_print','path':path,'sha256':hashlib.sha256(content).hexdigest(),'derived_from':'sld','source_sha256':source.sha256,'signed':False})
     for e in p.delivery.evidence:
         if kinds is not None and e.kind not in kinds:continue
         if mode=='final' and not accepted(p,evidence_id=e.id):continue

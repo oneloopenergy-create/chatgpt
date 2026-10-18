@@ -2,7 +2,7 @@
 
 ## Current implementation
 
-Schemdraw supplies the isolator switch vector geometry in generated SLDs through
+Schemdraw supplies the isolator switch vector geometry in legacy template SLDs through
 `gridease/sld/symbols.py`. Rendering uses its headless SVG backend and preserves
 wire terminal positions. GridEasy continues to own diagram layout, equipment labels,
 parameter-version tracking and engineer review gates. This does not claim IEC or
@@ -19,7 +19,8 @@ uv pip install --python .venv/bin/python -e '.[dev,engineering]'
 The smoke script creates an isolated context and verifies a synthetic 400 V,
 three-phase, 50 Hz, 100 kW / 20 kvar load. It checks convergence, actual power and
 phase voltages. Engine defaults must not substitute for verified project data.
-No customer project simulation endpoint or automatic study approval is enabled.
+The engineering delivery workspace also exposes a typed, project-specific steady-state
+simulation endpoint; see `engineering-delivery.md`. No automatic study approval is enabled.
 
 ## Next integration boundary
 
@@ -52,3 +53,9 @@ Released packages were installed through the package registry with normal verifi
 - The OpenDSS engine/backend is a separate dependency; its bundled licenses also
   need to accompany redistributions as applicable. This change does not vendor or
   rename either project.
+
+## Uploaded AU / NZ drawing corpus
+
+See [reference review and implemented improvements](sld-reference-optimisation.md).
+The typed engineering SLD uses its own terminal-aware vector primitives; the legacy
+Schemdraw templates remain available. Original case PDFs are not bundled.

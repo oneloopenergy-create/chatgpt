@@ -62,7 +62,7 @@ def design_issues(p):
     roles={b.role for b in d.breakers}
     for role in ('incomer','eg_common','isolation'):
         if role not in roles:out.append(f'Missing {role} breaker / isolation point')
-    ids={b.id for b in d.breakers}|{t.id for t in d.transformers}|{e.id for e in d.equipment}|{d.msb_id,d.eg_bus_id,'GRID','POC',d.relay_id}|{v for t in d.transformers for v in (t.primary_node,t.secondary_node) if v}
+    ids={b.id for b in d.switchboards}|{b.id for b in d.breakers}|{t.id for t in d.transformers}|{e.id for e in d.equipment}|{d.msb_id,d.eg_bus_id,'GRID','POC',d.relay_id}|{v for t in d.transformers for v in (t.primary_node,t.secondary_node) if v}
     for b in d.breakers:
         for val,label in ((b.rating_a,'rated current'),(b.breaking_ka,'breaking capacity'),(b.location,'location')):need(val,f'{b.id}: {label} missing')
         if b.role=='eg_common':
@@ -72,6 +72,8 @@ def design_issues(p):
     for t in d.transformers:
         for k in ('rating_kva','primary_v','secondary_v','impedance_pct','vector_group','source_ref'):need(getattr(t,k),f'{t.id}: {k} missing')
     need(d.cables,'Cable schedule missing')
+    if d.ownership_boundary_cable_id and d.ownership_boundary_cable_id not in {c.id for c in d.cables}:
+        out.append('Ownership boundary cable is not a declared cable')
     for c in d.cables:
         for k in ('from_id','to_id','cores','size_mm2','length_m','installation','current_capacity_a','source_ref'):need(getattr(c,k),f'{c.id}: {k} missing')
         if c.material=='unknown':out.append(f'{c.id}: conductor material missing')
@@ -84,7 +86,7 @@ def design_issues(p):
     while todo:
         node=todo.pop()
         for target in adjacency.get(node,set())-seen:seen.add(target);todo.append(target)
-    for node in ['POC',d.msb_id,d.eg_bus_id]+[e.id for e in d.equipment]+[b.id for b in d.breakers]+[t.primary_node or t.id for t in d.transformers]:
+    for node in ['POC',d.msb_id,d.eg_bus_id]+[e.id for e in d.equipment]+[b.id for b in d.switchboards]+[b.id for b in d.breakers]+[t.primary_node or t.id for t in d.transformers]:
         if node not in seen:out.append(f'{node}: no declared cable path to POC/GRID')
     # Every generation path must actually traverse the declared controlled CB.
     common={b.id for b in d.breakers if b.role=='eg_common'}

@@ -1,0 +1,262 @@
+[
+  {
+    "id": "AU_AER_Energex_EagleFarm_solar_BESS_ringfencing_SLD",
+    "country": "AU",
+    "sha256": "aa677e4988352f1e17bb900d2cb05a1361cb91bf5e8a9f7160b65fada0dab31c",
+    "pages": 6,
+    "category": "context_report",
+    "reviewed_pages": [],
+    "usage": "已登记文件与指纹，未作为自动设计规则或保护定值来源。",
+    "automatic_settings": false
+  },
+  {
+    "id": "AU_Ausgrid_NS194_IES_example_SLDs_LV_HV",
+    "country": "AU",
+    "sha256": "3315658d09b929a7c0cacb7ce9e646bf42d47e87df9bfafd57c2bc317dd6a071",
+    "pages": 29,
+    "category": "identified_standard",
+    "reviewed_pages": [],
+    "usage": "与已识别 NS194 Rev5 副本 SHA-256 相同；适用条款仍通过项目规范审查。",
+    "automatic_settings": false
+  },
+  {
+    "id": "AU_ARENA_NormantonSolarFarm_5MW_grid_connection_report",
+    "country": "AU",
+    "sha256": "83788e272c4663f3ebba93a46b3919ea446b423d99e2523548b5a4a9f32a19cd",
+    "pages": 16,
+    "category": "context_report",
+    "reviewed_pages": [],
+    "usage": "已登记文件与指纹，未作为自动设计规则或保护定值来源。",
+    "automatic_settings": false
+  },
+  {
+    "id": "AU_Ausgrid_EG_register_sample_SLD_schematics",
+    "country": "AU",
+    "sha256": "0532ca8e01cf1a3725d3e50d142544285b2c4e6d1d4d0f51b59fb9224b65c58e",
+    "pages": 4,
+    "category": "historical_guidance",
+    "reviewed_pages": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "usage": "旧 NS194 Rev2 示例，含同步机等超出现有逆变器范围的方案。不能替换 Rev5 规则。",
+    "automatic_settings": false
+  },
+  {
+    "id": "AU_NSWMajorProjects_SSD-16928008_AppendixT_single_line_diagram",
+    "country": "AU",
+    "sha256": "1cd03066ec1d33cdcb1b831523f04fd15647fe03ca1c69a3a79fafa6f168b3dc",
+    "pages": 1,
+    "category": "context_report",
+    "reviewed_pages": [],
+    "usage": "已登记文件与指纹，未作为自动设计规则或保护定值来源。",
+    "automatic_settings": false
+  },
+  {
+    "id": "AU_Jemena_residential_solar_battery_SLD_requirements",
+    "country": "AU",
+    "sha256": "11525b6c2229cd6b39baa89685bd2d4f28feed8a40649c1fe74ea695052785fb",
+    "pages": 7,
+    "category": "distribution_guidance",
+    "reviewed_pages": [
+      2,
+      3,
+      5,
+      6,
+      7
+    ],
+    "usage": "住宅 PV / AC 耦合储能 / DC 耦合示例；设备铭牌、分相、产权界线、现有与新增设备表达。仅限对应网络及范围。",
+    "automatic_settings": false
+  },
+  {
+    "id": "AU_Energex_STNW1170_small_IES_connections",
+    "country": "AU",
+    "sha256": "16dc5c2395f98e96b133ba4bf219569e5508e40021953067b1a26786570bee59",
+    "pages": 32,
+    "category": "context_report",
+    "reviewed_pages": [],
+    "usage": "已登记文件与指纹，未作为自动设计规则或保护定值来源。",
+    "automatic_settings": false
+  },
+  {
+    "id": "AU_ARENA_Neoen_WesternDowns_BESS_development_report",
+    "country": "AU",
+    "sha256": "c86f70e311df3949ead471a1a9f9cde7183c2f2336edbfef43e69ad3101a95c5",
+    "pages": 29,
+    "category": "context_report",
+    "reviewed_pages": [],
+    "usage": "已登记文件与指纹，未作为自动设计规则或保护定值来源。",
+    "automatic_settings": false
+  },
+  {
+    "id": "AU_NSWMajorProjects_MP08_0238-MOD-4_building_LV_main_switchboard_SLD",
+    "country": "AU",
+    "sha256": "98f1121444fc9e3c25b01632e7da485d9e94dffa358dc0d8011a84a2425d0ef4",
+    "pages": 1,
+    "category": "context_report",
+    "reviewed_pages": [],
+    "usage": "已登记文件与指纹，未作为自动设计规则或保护定值来源。",
+    "automatic_settings": false
+  },
+  {
+    "id": "AU_ARENA_Ballarat_BESS_knowledge_sharing_commissioning",
+    "country": "AU",
+    "sha256": "ced145f4493ed714b3814d43331a22c049ff2ba73a34d4b172f2c5cb37414661",
+    "pages": 70,
+    "category": "context_report",
+    "reviewed_pages": [],
+    "usage": "已登记文件与指纹，未作为自动设计规则或保护定值来源。",
+    "automatic_settings": false
+  },
+  {
+    "id": "AU_ARENA_ESCRI-SA_Dalrymple_BESS_final_report",
+    "country": "AU",
+    "sha256": "f431e507a48bb61c27247495e8365f9bb1e2b830c5b2145d0ca6bf41aaee7b99",
+    "pages": 39,
+    "category": "context_report",
+    "reviewed_pages": [],
+    "usage": "已登记文件与指纹，未作为自动设计规则或保护定值来源。",
+    "automatic_settings": false
+  },
+  {
+    "id": "AU_ARENA_Edify_DarlingtonPoint_BESS_system_strength_flagship_report",
+    "country": "AU",
+    "sha256": "b076fa786ad3b927fb79fd5f2d114c3fd136258fdb3cccee0682036340ac9ce5",
+    "pages": 46,
+    "category": "context_report",
+    "reviewed_pages": [],
+    "usage": "已登记文件与指纹，未作为自动设计规则或保护定值来源。",
+    "automatic_settings": false
+  },
+  {
+    "id": "AU_AusNet_1500-5000kW_EG_SLD_example",
+    "country": "AU",
+    "sha256": "78df5078f1c82a2ec8c2adb8fa3c331d97f84de72921d174bd200d5c48668f04",
+    "pages": 1,
+    "category": "drawing_example",
+    "reviewed_pages": [
+      1
+    ],
+    "usage": "图签、设备表、电缆表、母线分支与保护表的分区；定值不作为项目默认值。",
+    "automatic_settings": false
+  },
+  {
+    "id": "AU_TasNetworks_micro_small_generator_5MW_enquiry_form_SLD",
+    "country": "AU",
+    "sha256": "74869a6b7d04f4d62281de71e600e4bc687eb88d17c7aa85f5da065e76c01841",
+    "pages": 6,
+    "category": "context_report",
+    "reviewed_pages": [],
+    "usage": "已登记文件与指纹，未作为自动设计规则或保护定值来源。",
+    "automatic_settings": false
+  },
+  {
+    "id": "AU_AusNet_SLD_requirements_solar_application_examples",
+    "country": "AU",
+    "sha256": "51d7f261d45ff2166672ddb7508d016a5b035c0af2723ad8b3195582afbde8ad",
+    "pages": 8,
+    "category": "historical_guidance",
+    "reviewed_pages": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "usage": "2015 年资料：唯一图号、版次、设计与校核信息、支路和高分辨率图纸。不是当前定值依据。",
+    "automatic_settings": false
+  },
+  {
+    "id": "NZ_EA_Transpower_NorthIsland_grid_line_diagram_NIPS1_5_Aug2010",
+    "country": "NZ",
+    "sha256": "aa4098d34a0f6b4f5c08db92d1c180189d14fbd4712b802ffd19ef366790732a",
+    "pages": 5,
+    "category": "grid_map",
+    "reviewed_pages": [],
+    "usage": "输电网线路总览（部分为历史图片），不是用户侧项目 SLD；不用于自动推断项目接线。",
+    "automatic_settings": false
+  },
+  {
+    "id": "NZ_EA_Transpower_SouthIsland_grid_line_diagram_SIPS1_4_Aug2010",
+    "country": "NZ",
+    "sha256": "6b494236427a090ffa5660cae4c1401920cb543e192550f5e423e645c3f67bb1",
+    "pages": 4,
+    "category": "grid_map",
+    "reviewed_pages": [],
+    "usage": "输电网线路总览（部分为历史图片），不是用户侧项目 SLD；不用于自动推断项目接线。",
+    "automatic_settings": false
+  },
+  {
+    "id": "NZ_EPA_FastTrack_Oakridge_Solar_4.8MWp_consent_with_SLD",
+    "country": "NZ",
+    "sha256": "61f093f2a4f96dd83232f0905710daadcd1462c733548a4366c1c42da2031515",
+    "pages": 12,
+    "category": "project_consent_drawing",
+    "reviewed_pages": [
+      11
+    ],
+    "usage": "E200：11 kV 供电、产权边界、CT/VT、变压器、多组逆变器及图签。规划许可图不等于电网并网批准，不套用 NZ 规范至 AU。",
+    "automatic_settings": false
+  },
+  {
+    "id": "NZ_EA_Transpower_NorthIsland_grid_line_diagram_NIPS6",
+    "country": "NZ",
+    "sha256": "cd6e3e50f28db7c5370e2dd4633b23b418c52e34104a942dd7c34b8c0db9d22d",
+    "pages": 1,
+    "category": "grid_map",
+    "reviewed_pages": [],
+    "usage": "输电网线路总览（部分为历史图片），不是用户侧项目 SLD；不用于自动推断项目接线。",
+    "automatic_settings": false
+  },
+  {
+    "id": "NZ_EA_Transpower_NorthIsland_grid_line_diagram_NIPS1_5",
+    "country": "NZ",
+    "sha256": "680025176ee3521e61d95f544d0345a93e26efc18c36bf4b01744ed055efeacb",
+    "pages": 5,
+    "category": "grid_map",
+    "reviewed_pages": [],
+    "usage": "输电网线路总览（部分为历史图片），不是用户侧项目 SLD；不用于自动推断项目接线。",
+    "automatic_settings": false
+  },
+  {
+    "id": "NZ_EA_Transpower_SouthIsland_grid_line_diagram_SIPS1_4",
+    "country": "NZ",
+    "sha256": "eaed48afa675594e8b22b68c5e1a717f317270266d6e6e78a9229ae3539eb55c",
+    "pages": 4,
+    "category": "grid_map",
+    "reviewed_pages": [],
+    "usage": "输电网线路总览（部分为历史图片），不是用户侧项目 SLD；不用于自动推断项目接线。",
+    "automatic_settings": false
+  },
+  {
+    "id": "NZ_EA_Transpower_SouthIsland_grid_line_diagram_SIPS6",
+    "country": "NZ",
+    "sha256": "02276573fea1743dd5d9e22ade449992d96775f014c8193da6640306c3b20c1c",
+    "pages": 1,
+    "category": "grid_map",
+    "reviewed_pages": [],
+    "usage": "输电网线路总览（部分为历史图片），不是用户侧项目 SLD；不用于自动推断项目接线。",
+    "automatic_settings": false
+  },
+  {
+    "id": "NZ_Transpower_guidelines_new_connections_to_grid_standard_substation_configs",
+    "country": "NZ",
+    "sha256": "12ea9853e6d012e4be90e352e7c602340c508cda85ce7e56ab377aaa8427a03d",
+    "pages": 46,
+    "category": "transmission_guidance",
+    "reviewed_pages": [],
+    "usage": "输电接入与标准变电站配置；与澳洲配电网接入范围分开。",
+    "automatic_settings": false
+  },
+  {
+    "id": "NZ_SNZ_PAS6014_draft_residential_PV_battery_guideline",
+    "country": "NZ",
+    "sha256": "2813a40bf81d10a68614db85d252fa1ecdc11132f1569f0808e8758b843f8bb9",
+    "pages": 86,
+    "category": "draft_guidance",
+    "reviewed_pages": [],
+    "usage": "新西兰住宅 PV/储能草案；不能作为已生效澳洲规范。",
+    "automatic_settings": false
+  }
+]

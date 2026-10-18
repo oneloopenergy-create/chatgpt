@@ -307,14 +307,28 @@ class OperatingPoint(Record):
     study_reference: str = ''
 
 
+class Switchboard(Record):
+    id: str = Field(min_length=1, pattern=r'^[A-Za-z][A-Za-z0-9_-]*$')
+    label: str = ''
+    phases: str = ''
+    installation_status: Literal['existing', 'new', 'unresolved'] = 'unresolved'
+    location: str = ''
+
+
 class Design(Record):
     responsible_designer: str = ''
     designer_contact: str = ''
     drawing_revision: str = ''
+    drawing_number: str = ''
+    drawing_date: date | None = None
+    drawing_checker: str = ''
+    design_company: str = ''
+    switchboards: list[Switchboard] = Field(default_factory=list)
     operating_modes: str = ''
     existing_generation_description: str = ''
     connection_point: str = ''
     ownership_boundary: str = ''
+    ownership_boundary_cable_id: str = ''
     msb_id: str = 'MSB'
     eg_bus_id: str = 'EG_BUS'
     relay_id: str = 'RELAY1'
@@ -347,7 +361,7 @@ class Design(Record):
 
     @model_validator(mode='after')
     def unique_ids(self):
-        ids = [obj.id for name in ('breakers','transformers','cables','instruments','equipment','protection','site_items','site_routes','harmonic_studies','assessments','tests') for obj in getattr(self, name)]
+        ids = [obj.id for name in ('switchboards','breakers','transformers','cables','instruments','equipment','protection','site_items','site_routes','harmonic_studies','assessments','tests') for obj in getattr(self, name)]
         ids += [c.id for i in self.instruments for c in i.circuits]
         reserved={'GRID','POC',self.msb_id,self.eg_bus_id,self.relay_id}
         if len(reserved)!=5 or set(ids)&reserved:

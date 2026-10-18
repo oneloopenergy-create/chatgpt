@@ -4,6 +4,13 @@ GridEasy turns the project information for 100 kW – 5 MW commercial and indust
 **draft** DNSP connection application package. A registered engineer then reviews and signs it.
 GridEasy is a co-pilot for engineers. It does not replace DNSP/AEMO assessment or a registered engineer's sign-off.
 
+## Real SLD reference improvements
+
+The engineering SLD now uses a connected radial layout, additional named switchboards,
+explicit drawing metadata, and paginated A3 vector print sheets. See
+[AU / NZ reference review and usage](docs/sld-reference-optimisation.md).
+Reference settings and NZ approvals are never copied into project defaults.
+
 ## Quick start
 
 **Windows:** install [Python 3.11+](https://www.python.org/downloads/) (tick "Add python.exe to PATH"), download or clone

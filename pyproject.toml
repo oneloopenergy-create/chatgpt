@@ -24,7 +24,7 @@ build-backend = "setuptools.build_meta"
 include = ["gridease*"]
 
 [tool.setuptools.package-data]
-gridease = ["rules/packs/*.yaml", "rules/sources/*.yaml", "web/*"]
+gridease = ["rules/packs/*.yaml", "rules/sources/*.yaml", "web/*", "sld/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

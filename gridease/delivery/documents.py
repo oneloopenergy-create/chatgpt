@@ -30,71 +30,8 @@ def table(headers,rows):
 
 
 def engineering_sld(p):
-    from ..sld.generator import _Svg
-    d=p.delivery.design;s=_Svg()
-    assets={'GRID':('grid','DNSP network',p.get('site.dnsp','TBC')),'POC':('poc','Connection point',d.connection_point),d.msb_id:('bus','Main switchboard',d.msb_id),d.eg_bus_id:('bus','Generation bus',d.eg_bus_id)}
-    for b in d.breakers:assets[b.id]=('breaker',f'{b.id} · {b.role}',f'{text(b.rating_a)} A / {text(b.breaking_ka)} kA · {b.poles}P')
-    for t in d.transformers:assets[t.id]=('transformer',t.id,f'{text(t.rating_kva)} kVA · {text(t.primary_v)}/{text(t.secondary_v)} V')
-    for e in d.equipment:assets[e.id]=('equipment',f'{e.id} · {e.qty} × {e.kind.upper()}',f'{e.manufacturer} {e.model}')
-    # Directed user-entered connectivity controls the layout; there is no invented
-    # link from a named breaker to a bus or generator.
-    alias={node:t.id for t in d.transformers for node in (t.primary_node,t.secondary_node) if node}
-    edges=[(alias.get(c.from_id,c.from_id),alias.get(c.to_id,c.to_id)) for c in d.cables]
-    levels={'GRID':0,'POC':1}
-    for _ in range(len(assets)):
-        changed=False
-        for a,b in edges:
-            if a in levels and b not in levels:
-                levels[b]=levels[a]+1;changed=True
-        if not changed:break
-    for key in assets:
-        if key not in levels:levels[key]=max(levels.values(),default=1)+1
-    columns={}
-    for key in assets:columns.setdefault(levels[key],[]).append(key)
-    width=max(1100,240*(max(columns)+1)+100)
-    pos={key:(120+240*col,145+180*i) for col,keys in columns.items() for i,key in enumerate(keys)}
-    diagram_bottom=max(y for x,y in pos.values())+130
-    s.text(30,30,f'{p.name} — electrical single line diagram',size=20,anchor='start',weight='bold')
-    s.text(30,55,f'Rev {d.drawing_revision or "TBC"} · {d.responsible_designer or "designer TBC"} · {d.designer_contact or "contact TBC"} · POC: {d.connection_point or "TBC"} · Ownership: {d.ownership_boundary or "TBC"}',anchor='start')
-    for c in d.cables:
-        a=alias.get(c.from_id,c.from_id);b=alias.get(c.to_id,c.to_id)
-        if a not in pos or b not in pos:continue
-        x1,y1=pos[a];x2,y2=pos[b]
-        mid=(x1+x2)/2
-        s.line(x1+70,y1,mid,y1);s.line(mid,y1,mid,y2);s.line(mid,y2,x2-70,y2)
-        s.text(mid,y1-10,c.id,size=10)
-    for key,(kind,title,sub) in assets.items():
-        x,y=pos[key]
-        if kind=='breaker':
-            s.rect(x-15,y-15,30,30);s.line(x-15,y-15,x+15,y+15)
-            b=next(b for b in d.breakers if b.id==key)
-            s.text(x,y+55,f'{b.trip_coil} coil {text(b.coil_voltage_v)} V',size=9)
-        elif kind=='transformer':
-            s.circle(x-10,y,20);s.circle(x+10,y,20)
-            t=next(t for t in d.transformers if t.id==key)
-            s.text(x,y+55,f'Z={text(t.impedance_pct)}% · {t.vector_group or "vector TBC"}',size=10)
-        elif kind=='bus':s.line(x-65,y,x+65,y,w=6)
-        else:s.box(x,y-26,140,52,title,sub,fill='#eef4ff' if kind in ('grid','poc') else '#fff')
-        if kind in ('breaker','transformer','bus'):
-            s.text(x,y-30,title,size=11,weight='bold');s.text(x,y+38,sub,size=9)
-        if kind=='equipment':
-            e=next(e for e in d.equipment if e.id==key)
-            s.text(x,y+45,f'{text(e.rated_kva)} kVA / {text(e.rated_kw)} kW per unit',size=10)
-            s.text(x,y+62,f'CEC: {e.cec_reference or "TBC"}',size=9)
-    y=diagram_bottom
-    s.text(30,y,'Cable schedule — actual endpoints and installation specification',size=14,anchor='start',weight='bold');y+=25
-    for c in d.cables:
-        s.text(30,y,f'{c.id}: {c.from_id} → {c.to_id} · {c.cores or "cores TBC"} · {text(c.size_mm2)} mm² {c.material} · {text(c.length_m)} m · {c.installation or "installation TBC"} · Iz {text(c.current_capacity_a)} A',anchor='start');y+=22
-    y+=20;s.text(30,y,'CT / VT installation and secondary configuration',size=14,anchor='start',weight='bold');y+=25
-    for i in d.instruments:
-        s.text(30,y,f'{i.id} {i.kind} · at {i.location_id} · {i.purpose} · {text(i.ratio_primary)}/{text(i.ratio_secondary)} · class {i.accuracy_class or "TBC"} · {text(i.burden_va)} VA',anchor='start');y+=20
-        s.text(50,y,f'{i.phases} · {i.winding or "winding TBC"} · terminals {i.secondary_terminals or "TBC"} → {i.relay_input or "meter / TBC"} · earth {i.earthing or "TBC"}',size=10,anchor='start');y+=24
-        if i.location_id in pos:
-            x,yy=pos[i.location_id];s.circle(x+55,yy-10,9);s.text(x+80,yy-12,i.id,size=9,anchor='start')
-    s.line(30,85,width-30,85,dash='6,4');s.text(width-30,75,f'Boundary: {d.ownership_boundary or "UNCONFIRMED"}',anchor='end',size=10)
-    s.text(30,y+20,'DRAFT — SUBJECT TO ENGINEER REVIEW AND SIGN-OFF — NOT FOR CONSTRUCTION',anchor='start',fill='#b00',weight='bold')
-    s.text(30,y+43,f'Design {design_hash(p)[:16]} · cable graph shown as entered; unconnected items require resolution',anchor='start',size=10)
-    return s.render(width,y+65),inputs(p),design_issues(p)
+    from ..sld.engineering import render_engineering_sld
+    return render_engineering_sld(p),inputs(p),design_issues(p)
 
 
 def protection_schematic(p):
